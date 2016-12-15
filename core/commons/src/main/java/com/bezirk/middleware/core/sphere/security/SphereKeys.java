@@ -52,13 +52,6 @@ public final class SphereKeys implements Serializable {
         this.ownerPublicKeyBytes = null;
     }
 
-    /**
-     * Initializes the Object with all the keys passed
-     *
-     * @param sphereKey
-     * @param ownerPrivateKeyBytes
-     * @param ownerPublicKeyBytes
-     */
     public SphereKeys(byte[] sphereKey, byte[] ownerPrivateKeyBytes, byte[] ownerPublicKeyBytes) {
         this.sphereKey = sphereKey == null ? null : sphereKey.clone();
         this.ownerPrivateKeyBytes = ownerPrivateKeyBytes == null ? null : ownerPrivateKeyBytes.clone();
@@ -74,9 +67,6 @@ public final class SphereKeys implements Serializable {
     /**
      * Initializes the Object with all the keys passed [for member spheres, no
      * private key]
-     *
-     * @param sphereKey
-     * @param ownerPublicKeyBytes
      */
     public SphereKeys(byte[] sphereKey, byte[] ownerPublicKeyBytes) {
         this.sphereKey = sphereKey == null ? null : sphereKey.clone();
@@ -87,21 +77,21 @@ public final class SphereKeys implements Serializable {
     /**
      * @return the sphereKey
      */
-    public final byte[] getSphereKey() {
+    public byte[] getSphereKey() {
         return sphereKey == null ? null : sphereKey.clone();
     }
 
     /**
      * @return the ownerPrivateKeyBytes
      */
-    public final byte[] getOwnerPrivateKeyBytes() {
+    public byte[] getOwnerPrivateKeyBytes() {
         return ownerPrivateKeyBytes == null ? null : ownerPrivateKeyBytes.clone();
     }
 
     /**
      * @return the ownerPublicKeyBytes
      */
-    public final byte[] getOwnerPublicKeyBytes() {
+    public byte[] getOwnerPublicKeyBytes() {
         return ownerPublicKeyBytes == null ? null : ownerPublicKeyBytes.clone();
     }
 

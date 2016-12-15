@@ -22,7 +22,11 @@
  */
 package com.bezirk.middleware.android;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.core.proxy.Config;
@@ -35,13 +39,15 @@ import org.slf4j.LoggerFactory;
 /**
  * API to register Zirks, fetch the Bezirk API, and manage the lifecycle of the middleware on Android.
  */
-public abstract class BezirkMiddleware {
+public final class BezirkMiddleware {
     private static final Logger logger = LoggerFactory.getLogger(BezirkMiddleware.class);
     private static Context context;
-    private static boolean localBezirkService = true;
-    private static IntentSender intentSender;
-    private static ServiceManager serviceManager;
-    private static long startTime;
+    private static volatile boolean serviceBound;
+    private static ComponentManager.ProxyBinder proxyBinder;
+    private static final ServiceConnection serviceConnection = new BezirkServiceConnection();
+
+    private BezirkMiddleware() {
+    }
 
     /**
      * Initializes and starts the bezirk
@@ -51,10 +57,11 @@ public abstract class BezirkMiddleware {
      * {@link BezirkMiddleware} is started using default configurations {@link Config} unless
      * configurations are supplied explicitly using {@link #initialize(Context, Config)}. Bezirk
      * service runs as a background Android service unless explicitly stopped by the application
-     * using {@link #stop()} or by Android OS.
+     * using {@link #stop()} or when the application is closed by the user.
      * </p>
      *
      * @see #initialize(Context, Config)
+     * @see #initialize(Context, String)
      * @see #stop()
      */
     public static synchronized void initialize(@NotNull final Context context) {
@@ -67,12 +74,15 @@ public abstract class BezirkMiddleware {
      * <p>
      * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
      * {@link BezirkMiddleware} is started using default configurations {@link Config} with
-     * {@link Config#groupName} set to #channelId. Bezirk service runs
+     * {@link Config#groupName} set to the passed <code>channelId</code>. Bezirk service runs
      * as a background Android service unless explicitly stopped by the application
-     * using {@link #stop()} or by Android OS.
+     * using {@link #stop()} or when the application is closed by the user.
      * </p>
      *
-     * @param channelId
+     * @param channelId channel identifier associated with this <code>BezirkMiddleware</code> instance.
+     *                  <code>BezirkMiddleware</code> instances on the same <code>channelId</code>
+     *                  can communicate with each other.
+     * @see #initialize(Context)
      * @see #initialize(Context, Config)
      * @see #stop()
      */
@@ -89,33 +99,29 @@ public abstract class BezirkMiddleware {
      * Service is started using the supplied <code>config</code>. Once started, Zirk(s) can be
      * registered using {@link BezirkMiddleware#registerZirk(String)}. Bezirk service runs as a
      * background Android service unless explicitly stopped by the application using {@link #stop()}
-     * or by Android OS.
+     * or when the application is closed by the user.
      * </p>
      *
-     * @param config custom configurations to be used by Bezirk service
-     *               <ul>
-     *               <li>If <code>null</code>, a default configuration is used</li>
-     *               <li>If not <code>null</code>, the Bezirk service is created for the current
-     *               application, even if an existing global instance of the Bezirk service is already
-     *               running on the device (e.g. because the middleware is installed as a standalone
-     *               app on the phone).</li>
-     *               </ul>
+     * @param config custom configurations to be used by the Bezirk service.
+     *               If <code>null</code>, default configuration is used.
+     * @see #initialize(Context)
+     * @see #initialize(Context, String)
      * @see #stop()
      */
     public static synchronized void initialize(@NotNull final Context context, final Config config) {
+        if (serviceBound) {
+            logger.debug("Bezirk service already initialized");
+            return;
+        }
         BezirkMiddleware.context = context;
 
-        if (config == null) {
-            localBezirkService = !IntentSender.isBezirkAvailableOnDevice(context);
-        } else {
-            logger.debug("Custom configuration passed when initializing Bezirk, creating custom " +
-                    "Bezirk service. Is Bezirk service local: {}", localBezirkService);
-        }
+        //start service to allow it to run in the background
+        context.startService(new Intent(context, ComponentManager.class));
 
-        intentSender = new IntentSender(context);
-        serviceManager = new ServiceManager(intentSender);
-        serviceManager.start((config == null) ? new Config() : config);
-        startTime = System.currentTimeMillis();
+        //bind to the service to get the IBinder interface for communication
+        final Intent intent = new Intent(context, ComponentManager.class);
+        intent.putExtra(Config.class.getSimpleName(), (config == null) ? new Config() : config);
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**
@@ -127,15 +133,14 @@ public abstract class BezirkMiddleware {
      *                 developer/vendor
      * @return an instance of the Bezirk API for the newly registered Zirk, or <code>null</code> if
      * a Zirk with the name <code>zirkName</code> is already registered.
-     * @see #initialize(Context)
      */
     public static synchronized Bezirk registerZirk(@NotNull final String zirkName) {
-        if (serviceManager == null || !serviceManager.isStarted()) {
+        if (!serviceBound) {
             throw new IllegalStateException("Bezirk Service is not running. Start the Bezirk " +
                     "service using BezirkMiddleware.initialize(Context) or " +
                     "BezirkMiddleware.initialize(Context, Config)");
         }
-        ZirkId zirkId = ProxyClient.registerZirk(context, zirkName, intentSender);
+        final ZirkId zirkId = ProxyClient.registerZirk(context, zirkName);
         return zirkId == null ? null : new ProxyClient(zirkId);
     }
 
@@ -147,24 +152,32 @@ public abstract class BezirkMiddleware {
      * </p>
      */
     public static synchronized void stop() {
-        if (serviceManager == null) {
-            throw new IllegalStateException("Is Bezirk Middleware initialized? Initialize using " +
-                    "BezirkMiddleware.initialize(Context) or " +
-                    "BezirkMiddleware.initialize(Context, Config)");
+        if (serviceBound) {
+            logger.debug("unbinding and stopping Bezirk Service");
+            context.unbindService(serviceConnection);
+            context.stopService(new Intent(context, ComponentManager.class));
+            serviceBound = false;
         }
-        serviceManager.stop();
-        context = null;
     }
 
-    static boolean isLocalBezirkService() {
-        return localBezirkService;
-    }
+    private static class BezirkServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            synchronized (BezirkMiddleware.class) {
+                proxyBinder = (ComponentManager.ProxyBinder) service;
+                ProxyClient.registerProxyServer(proxyBinder.getProxyServer());
+                serviceBound = true;
+                logger.trace("Bezirk Service connected");
+            }
+        }
 
-    /**
-     * Time the BezirkMiddleware is initialized
-     */
-    static final long getStartTime() {
-        return startTime;
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            synchronized (BezirkMiddleware.class) {
+                serviceBound = false;
+                logger.trace("Bezirk Service disconnected");
+            }
+        }
     }
-
 }

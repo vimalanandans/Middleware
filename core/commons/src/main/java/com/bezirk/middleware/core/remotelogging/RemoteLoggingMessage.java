@@ -31,31 +31,31 @@ public class RemoteLoggingMessage {
     /**
      * sphere Name on which the Remote Logging Message is sent.
      */
-    public String sphereName = null;
+    public String sphereName;
     /**
      * Unique key associated with the Message
      */
-    public String timeStamp = null;
+    public String timeStamp;
     /**
      * Sender of the Log message
      */
-    public String sender = null;
+    public String sender;
     /**
      * Recipient of the Log Message
      */
-    public String recipient = null;
+    public String recipient;
     /**
      * Unique Id that is for each message that is sent or received
      */
-    public String uniqueMsgId = null;
+    public String uniqueMsgId;
     /**
      * Type of a Message (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
      */
-    public String typeOfMessage = null;
+    public String typeOfMessage;
     /**
      * Version of the Logging Message
      */
-    public String version = null;
+    public String version;
 
     public RemoteLoggingMessage() {
         //	 Empty Constructor used by Json to toJson Deserialize
@@ -67,7 +67,7 @@ public class RemoteLoggingMessage {
      *
      * @param sphereName    Name of the sphere
      * @param timeStamp     timeStamp of the Message
-    // * @param sender        Sender IP
+     *                      // * @param sender        Sender IP
      * @param recipient     Recipient Ip, null in case of multicast
      * @param uniqueMsgId   MsgId of the message that is sent or received
      * @param typeOfMessage one of (EVENT-SEND, EVENT-RECEIVE, CONTROL-MESSAGE-SEND, CONTROL-MESSAGE-RECEIVE)
@@ -103,6 +103,4 @@ public class RemoteLoggingMessage {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
-
 }

@@ -30,9 +30,10 @@ import org.jetbrains.annotations.NotNull;
 /**
  * API to register Zirks, fetch the Bezirk API, and manage the lifecycle of the middleware on Java SE.
  */
-public abstract class BezirkMiddleware {
+public final class BezirkMiddleware {
 
-    private static long startTime;
+    private BezirkMiddleware() {
+    }
 
     /**
      * Initializes and starts the bezirk service.
@@ -43,6 +44,7 @@ public abstract class BezirkMiddleware {
      * </p>
      *
      * @see #initialize(Config)
+     * @see #initialize(String)
      * @see #stop()
      */
     public static void initialize() {
@@ -54,9 +56,12 @@ public abstract class BezirkMiddleware {
      * <p>
      * Once started, Zirk(s) can be registered using {@link BezirkMiddleware#registerZirk(String)}.
      * {@link BezirkMiddleware} is started using default configurations {@link Config} with
-     * {@link Config#groupName} set to #channelId.
+     * {@link Config#groupName} set to the passed <code>channelId</code>.
      * </p>
-     *
+     * @param channelId channel identifier associated with this <code>BezirkMiddleware</code> instance.
+     *                  <code>BezirkMiddleware</code> instances on the same <code>channelId</code>
+     *                  can communicate with each other.
+     * @see #initialize()
      * @see #initialize(Config)
      * @see #stop()
      */
@@ -74,18 +79,15 @@ public abstract class BezirkMiddleware {
      * registered using {@link BezirkMiddleware#registerZirk(String)}.
      * </p>
      *
-     * @param config custom configurations to be used by Bezirk service
-     *               <ul>
-     *               <li>If <code>null</code>, a default configuration is used</li>
-     *               <li>If not <code>null</code>, Bezirk service is created for the current application,
-     *               even if an existing Bezirk service(inside the Bezirk Application) is running in the device.</li>
-     *               </ul>
+     * @param config custom configurations to be used by the Bezirk service.
+     *               If <code>null</code>, default configuration is used.
+     * @see #initialize()
+     * @see #initialize(String)
      * @see #stop()
      */
     public static void initialize(final Config config) {
         synchronized (BezirkMiddleware.class) {
             ProxyClient.start((config == null) ? new Config() : config);
-            startTime = System.currentTimeMillis();
         }
     }
 
@@ -113,19 +115,12 @@ public abstract class BezirkMiddleware {
     /**
      * Stop the Bezirk service.
      * <p>
-     * Once Bezirk is stopped, Zirk(s) cannot register with the Bezirk service and all communications
+     * Once Bezirk is stopped, Zirk(s) cannot register with the Bezirk middleware and all communications
      * between registered Zirks would stop.
      * </p>
      */
     public static synchronized void stop() {
         ProxyClient.stop();
-    }
-
-    /**
-     * Time the BezirkMiddleware is initialized
-     */
-    static final synchronized long getStartTime() {
-        return startTime;
     }
 
 }

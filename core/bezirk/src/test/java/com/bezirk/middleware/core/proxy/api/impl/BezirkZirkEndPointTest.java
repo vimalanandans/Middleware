@@ -9,8 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testcase verifies the EchoRequest by setting the properties and retrieving them.
- *
- * @author AJC6KOR
  */
 public class BezirkZirkEndPointTest {
 

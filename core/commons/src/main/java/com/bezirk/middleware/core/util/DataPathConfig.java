@@ -34,10 +34,12 @@ import java.io.File;
 public class DataPathConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(DataPathConfig.class);
-    private static final String DATA = "data"; // name of data folder
-    private static final String BEZIRK = "bezirk"; // name of folder for holding bezirk related data/database(s)
+    // name of data folder
+    private static final String DATA = "data";
+    // name of folder for holding bezirk related data/database(s)
+    private static final String BEZIRK = "bezirk";
     // relative data path for bezirk folder
-    private static final String DATA_PATH_REL = DATA + File.separator + BEZIRK +  File.separator;
+    private static final String DATA_PATH_REL = DATA + File.separator + BEZIRK + File.separator;
 
     // variable set in gradle/environment to enable/disable sphere-mgmt display
     private static final String DISPLAY_ENV_VARIABLE = "displayEnabled";
@@ -46,20 +48,22 @@ public class DataPathConfig {
 
     // variable set in gradle/environment to enable/disable bezirk logs
     private static final String LOGGING_ENV_VARIABLE = "loggingEnabled";
-    private static final boolean LOGGING_DEFAULT_VALUE = false; // default value of bezirk logging
+    // default value of bezirk logging
+    private static final boolean LOGGING_DEFAULT_VALUE = false;
 
-    private String dataPath; // holds the absolute path of the bezirk folder
+    // holds the absolute path of the bezirk folder
+    private String dataPath;
 
-    private  static final DataPathConfig dataPathConfig = new DataPathConfig();
+    private static final DataPathConfig dataPathConfig = new DataPathConfig();
 
     public DataPathConfig() {
         init();
     }
 
     private void init() {
-        if(System.getProperty("java.vm.name") != null &&
+        if (System.getProperty("java.vm.name") != null &&
                 System.getProperty("java.vm.name").equalsIgnoreCase("Dalvik")) {
-            dataPath = File.separator+"storage/emulated/0/" + DATA_PATH_REL;
+            dataPath = File.separator + "storage/emulated/0/" + DATA_PATH_REL;
         } else {
             // gradle sets this when invoked
             String appHome = System.getenv().get("APP_HOME");
@@ -92,5 +96,4 @@ public class DataPathConfig {
     public static String getDataPath() {
         return dataPathConfig.dataPath;
     }
-
 }

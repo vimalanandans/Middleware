@@ -72,24 +72,25 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
      * GUI components
      */
     private final JMenuBar menuBar = new JMenuBar();
-    private final JMenu menuSettings = new JMenu(), menuAboutUs = new JMenu();
-    private final JTextField ipAddressTxt = new JTextField(13),
-            portTxt = new JTextField(4);
-    private final JPanel settingsPanel = new JPanel(),
-            framePanel = new JPanel();
+    private final JMenu menuSettings = new JMenu();
+    private final JMenu menuAboutUs = new JMenu();
+    private final JTextField ipAddressTxt = new JTextField(13);
+    private final JTextField portTxt = new JTextField(4);
+    private final JPanel settingsPanel = new JPanel();
+    private final JPanel framePanel = new JPanel();
     private final GridBagLayout frameLayout = new GridBagLayout();
-    private final JScrollPane sphereListLeftScroll = new JScrollPane(),
-            sphereListRightScroll = new JScrollPane();
-    private final JLabel selectSphereLbl = new JLabel(),
-            selectedSphereLbl = new JLabel();
-    private final DefaultListModel<String> leftSphereListModel = new DefaultListModel<>(),
-            rightSphereListModel = new DefaultListModel<>();
-    private final JList<String> leftSphereList = new JList<>(
-            leftSphereListModel), rightSphereList = new JList<>(
-            rightSphereListModel);
-    private final JButton listSphereBtn = new JButton(),
-            startLoggingBtn = new JButton(), moveRightBtn = new JButton(),
-            moveLeftBtn = new JButton();
+    private final JScrollPane sphereListLeftScroll = new JScrollPane();
+    private final JScrollPane sphereListRightScroll = new JScrollPane();
+    private final JLabel selectSphereLbl = new JLabel();
+    private final JLabel selectedSphereLbl = new JLabel();
+    private final DefaultListModel<String> leftSphereListModel = new DefaultListModel<>();
+    private final DefaultListModel<String> rightSphereListModel = new DefaultListModel<>();
+    private final JList<String> leftSphereList = new JList<>(leftSphereListModel);
+    private final JList<String> rightSphereList = new JList<>(rightSphereListModel);
+    private final JButton listSphereBtn = new JButton();
+    private final JButton startLoggingBtn = new JButton();
+    private final JButton moveRightBtn = new JButton();
+    private final JButton moveLeftBtn = new JButton();
     private final JCheckBox bezirkDeveloperCheckBox = new JCheckBox();
     private final JFrame thisFrame;
     private final transient ListSelectionListener leftSphereSelectionListListener = new ListSelectionListener() {
@@ -107,7 +108,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     private final transient ActionListener listSphereBtnListener = new ActionListener() {
 
         @Override
-        public void actionPerformed(ActionEvent arg0) {
+        public void actionPerformed(ActionEvent actionEvent) {
             leftSphereListModel.removeAllElements();
             rightSphereListModel.removeAllElements();
             leftSphereListModel.addElement(RemoteLog.ALL_SPHERES);
@@ -150,22 +151,22 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             moveLeftBtn.setEnabled(false);
         }
     };
+
     /**
      * Moves the spheres from right to left box
      */
     private final transient ActionListener moveLeftButtonActionListener = new ActionListener() {
-
         @Override
         public void actionPerformed(ActionEvent arg0) {
             final String temp = rightSphereList.getSelectedValue();
-            final int index = rightSphereList.getSelectedIndex();
-            rightSphereListModel.remove(index);
+            rightSphereListModel.remove(rightSphereList.getSelectedIndex());
             leftSphereListModel.addElement(temp);
+
             if (!rightSphereListModel.isEmpty()) {
                 startLoggingBtn.setEnabled(false);
-                if (!leftSphereListModel.elementAt(0).equals(RemoteLog.ALL_SPHERES)) {
+                if (!RemoteLog.ALL_SPHERES.equals(leftSphereListModel.elementAt(0))) {
                     leftSphereListModel.add(0, RemoteLog.ALL_SPHERES);
-                } else if (temp.equals(RemoteLog.ALL_SPHERES)) {
+                } else if (RemoteLog.ALL_SPHERES.equals(temp)) {
                     leftSphereListModel.removeAllElements();
                     startLoggingBtn.setEnabled(false);
                     for (int i = 0; i < size; i++) {
@@ -173,10 +174,12 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
                     }
                 }
             }
+
             moveLeftBtn.setEnabled(false);
             moveRightBtn.setEnabled(false);
         }
     };
+
     /**
      * Thread that starts and stops the LoggingService.
      */
@@ -188,7 +191,19 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             shutGUI();
             super.windowClosing(arg0);
         }
+
+        /**
+         * Stops the GUI. Called when the zirk is shut down.
+         */
+        private void shutGUI() {
+            try {
+                remoteLog.enableLogging(false, false, false, null);
+            } catch (Exception e) {
+                logger.error("Error in stopping logging zirk. ", e);
+            }
+        }
     };
+
     private boolean isDeveloperModeEnabled;
     private final transient ItemListener developerModeListener = new ItemListener() {
 
@@ -201,6 +216,7 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
             }
         }
     };
+
     /**
      * Starts the logging Zirk by sending the {@link} on the wire to all the spheres and takes the
      * action to the logging screen.
@@ -238,6 +254,8 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
     /**
      * initialize the GUI with the components
      */
+    // Ignore magic number warnings for GUI code
+    @SuppressWarnings("squid:S109")
     private void jbInit() {
         this.setJMenuBar(menuBar);
         this.getContentPane().setLayout(frameLayout);
@@ -287,10 +305,8 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
 
         settingsPanel.add(new JLabel("IP Address:"));
         settingsPanel.add(ipAddressTxt);
-        settingsPanel.add(Box.createHorizontalStrut(15)); // spacer between
-        // textbox
-        settingsPanel
-                .add(new JLabel("Port"));
+        settingsPanel.add(Box.createHorizontalStrut(15));
+        settingsPanel.add(new JLabel("Port"));
         settingsPanel.add(portTxt);
 
         sphereListRightScroll.getViewport().add(rightSphereList, null);
@@ -336,26 +352,12 @@ public final class RemoteLogSphereSelectGUI extends JFrame implements RemoteLogg
 
     }
 
-    /**
-     * Stops the GUI. Called when the zirk is shut down.
-     */
-    public void shutGUI() {
-        try {
-            remoteLog.enableLogging(false, false, false, null);
-        } catch (Exception e) {
-            logger.error("Error in stopping logging zirk. ", e);
-        }
-    }
-
     @Override
     public void handleLogMessage(RemoteLoggingMessage logMessage) {
         logger.debug("inside handleLog message of RemoteLogSphereSelectGUI ");
         if (null != remoteLogDetails && msgLog != null) {
             logger.debug("remoteLogDetails and msgLog are not null");
-            // if (msgLog.isRemoteMessageValid(logMessage)) {
             remoteLogDetails.updateTable(logMessage);
-            // }
         }
     }
-
 }

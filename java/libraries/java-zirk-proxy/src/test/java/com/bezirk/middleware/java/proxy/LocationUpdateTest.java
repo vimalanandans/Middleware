@@ -18,7 +18,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
- * @author vbd4kor
  * This class tests the location Update for the Services.Two Services MockSErviceA, MockServiceB.
  * MockServiceA and MockServiceB subscribes to a protocolRole and a location (L1). MockService A sends a Multicast event and MS-B receives.
  * MS-B updates the location(L2). MS-A sends a multicast event with the same location(L1). MS-B doesnt receive it. MS-A updates the location to L1.

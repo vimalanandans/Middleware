@@ -38,8 +38,8 @@ import java.util.Map;
  * // ...
  *          Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
  *
- *          //set loglevel to debug for the bezirk middleware.
- *          configBuilder.setLogLevel(Config.Level.DEBUG);
+ *          //disable communication with external devices
+ *          configBuilder.setComms(false);
  *
  *          BezirkMiddleware.initialize(configBuilder.create());
  *
@@ -134,7 +134,7 @@ public class Config implements Serializable {
         }
 
         /**
-         * Set Group-name/channelId used for communication between a multiple instances of bezirk.
+         * Set Group-name/channelId used for communication between multiple instances of bezirk.
          */
         public ConfigBuilder setGroupName(@NotNull final String groupName) {
             this.groupName = groupName;
@@ -143,7 +143,12 @@ public class Config implements Serializable {
 
         /**
          * Set the overall log level for the bezirk
+         *
+         * @deprecated As of version 3.1.0, this method is no longer used.
+         * Going forward Bezirk will use the {@link org.slf4j.Logger} interface with Logback as the default logging implementation.
+         * Applications can either use logback or switch it with another slf4j supported logging implementation.
          */
+        @Deprecated
         public ConfigBuilder setLogLevel(@NotNull final Level logLevel) {
             this.logLevel = logLevel;
             return this;
@@ -153,7 +158,13 @@ public class Config implements Serializable {
          * Set loglevel for a particular package in the bezirk middleware.
          *
          * @param packageName package name for setting the log level, ex. <code>com.bezirk.middleware.core.comms</code>
+         *
+         * @deprecated As of version 3.1.0, this method is no longer used.
+         * Going forward Bezirk will use the {@link org.slf4j.Logger} interface with Logback as the default logging implementation.
+         * Applications can either use logback or switch it with another slf4j supported logging implementation.
+
          */
+        @Deprecated
         public ConfigBuilder setPackageLogLevel(@NotNull final String packageName, @NotNull final Level logLevel) {
             if (packageLogLevelMap == null) {
                 packageLogLevelMap = new HashMap<>();

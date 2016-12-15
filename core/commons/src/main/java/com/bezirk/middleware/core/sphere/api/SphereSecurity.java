@@ -92,25 +92,25 @@ public interface SphereSecurity {
      * @param sphereId sphereId of the sphere for which input stream needs to be
      *                 decrypted
      *                 <pre>
-     *                                 NOTE: This method does NOT flush or close either stream prior to returning -
-     *                                 the caller must do so when they are finished with the streams. For example:
-     *                                 {@code try {
-     *                                       InputStream in = ...
-     *                                       OutputStream out = ...
-     *                                       bezirkSphere.decryptSphereContent(in, out, sphereId);
-     *                                   } finally {
-     *                                       if (in != null) {
-     *                                           try {
-     *                                               in.close();
-     *                                           } catch (IOException ioe1) { ... logger, trigger event, etc }
-     *                                       }
-     *                                       if (out != null) {
-     *                                           try {
-     *                                               out.close();
-     *                                           } catch (IOException ioe2) { ... logger, trigger event, etc }
-     *                                       }
-     *                                   }}
-     *                                            </pre>
+     *                                                                                 NOTE: This method does NOT flush or close either stream prior to returning -
+     *                                                                                 the caller must do so when they are finished with the streams. For example:
+     *                                                                                 {@code try {
+     *                                                                                       InputStream in = ...
+     *                                                                                       OutputStream out = ...
+     *                                                                                       bezirkSphere.decryptSphereContent(in, out, sphereId);
+     *                                                                                   } finally {
+     *                                                                                       if (in != null) {
+     *                                                                                           try {
+     *                                                                                               in.close();
+     *                                                                                           } catch (IOException ioe1) { ... logger, trigger event, etc }
+     *                                                                                       }
+     *                                                                                       if (out != null) {
+     *                                                                                           try {
+     *                                                                                               out.close();
+     *                                                                                           } catch (IOException ioe2) { ... logger, trigger event, etc }
+     *                                                                                       }
+     *                                                                                   }}
+     *                                                                                            </pre>
      */
     void decryptSphereContent(InputStream in, OutputStream out, String sphereId);
 }

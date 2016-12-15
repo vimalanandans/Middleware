@@ -10,10 +10,6 @@ public class NetworkInterfaceTest {
     public static void main(String[] args) throws Exception {
 
         SecurityManager mgr = System.getSecurityManager();
-        /*
-		SecurityManager mgr = new SecurityManager();
-		System.setSecurityManager(mgr);
-		*/
 
         try {
             if (mgr == null) {

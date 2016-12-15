@@ -25,20 +25,15 @@ package com.bezirk.middleware.android;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import com.bezirk.middleware.android.device.AndroidDevice;
-import com.bezirk.middleware.android.logging.LoggingManager;
 import com.bezirk.middleware.android.persistence.DatabaseConnectionForAndroid;
-import com.bezirk.middleware.android.proxy.android.AndroidProxyServer;
 import com.bezirk.middleware.android.proxy.android.ZirkMessageHandler;
-import com.bezirk.middleware.core.actions.BezirkAction;
-import com.bezirk.middleware.core.actions.StartServiceAction;
-import com.bezirk.middleware.core.actions.StopServiceAction;
 import com.bezirk.middleware.core.comms.JmqCommsManager;
-import com.bezirk.middleware.core.componentManager.LifeCycleCallbacks;
 import com.bezirk.middleware.core.componentManager.LifeCycleObservable;
 import com.bezirk.middleware.core.datastorage.DataStorageException;
 import com.bezirk.middleware.core.datastorage.RegistryStorage;
@@ -46,6 +41,7 @@ import com.bezirk.middleware.core.device.Device;
 import com.bezirk.middleware.core.identity.BezirkIdentityManager;
 import com.bezirk.middleware.core.proxy.Config;
 import com.bezirk.middleware.core.proxy.MessageHandler;
+import com.bezirk.middleware.core.proxy.ProxyServer;
 import com.bezirk.middleware.core.pubsubbroker.PubSubBroker;
 import com.bezirk.middleware.core.remotelogging.RemoteLog;
 import com.bezirk.middleware.core.streaming.Streaming;
@@ -55,110 +51,64 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ComponentManager extends Service implements LifeCycleCallbacks {
+public final class ComponentManager extends Service {
     private static final Logger logger = LoggerFactory.getLogger(ComponentManager.class);
     private static final String ALIAS_KEY = "aliasName";
     private static final String DB_VERSION = "0.0.4";
     private SharedPreferences preferences;
-    private ActionProcessor actionProcessor;
     private BezirkIdentityManager identityManager;
-    private AndroidProxyServer proxyServer;
+    private ProxyServer proxyServer;
     private JmqCommsManager comms;
     private RegistryStorage registryStorage;
     private LifeCycleObservable lifecycleObservable;
     private Config config;
-    private final RemoteLog remoteLog = null;
-    private LifeCycleObservable.State currentState;
-    private String identityString;
+    private RemoteLog remoteLog;
 
-    @Override
-    public int onStartCommand(final Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        if (intent != null) {
-            //Check if bezirk is starting for the first time, if yes process the start bezirk action
-            if (currentState == null) {
-                BezirkAction intentAction = BezirkAction.getActionFromString(intent.getAction());
-                if (intentAction == BezirkAction.ACTION_START_BEZIRK) {
-                    StartServiceAction startServiceAction =
-                            (StartServiceAction) intent.getSerializableExtra(BezirkAction.ACTION_START_BEZIRK.getName());
-                    start(startServiceAction);
-                } else {
-                    logger.debug("Bezirk Action received {}. Bezirk is not running. {} required to start bezirk.",
-                            intentAction, BezirkAction.ACTION_START_BEZIRK);
-                }
-            } else {
-                actionProcessor.processBezirkAction(intent, proxyServer, this);
-            }
-        } else {
-            logger.debug("Intent received by Bezirk Service is null");
+    public ComponentManager() {
+        super();
+    }
+
+    public class ProxyBinder extends Binder {
+        ProxyServer getProxyServer() {
+            return proxyServer;
         }
-        return START_STICKY;
     }
 
     @NonNull
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("IBinder is not supported");
-    }
-
-    @Override
-    public void start(StartServiceAction startServiceAction) {
-        //start bezirk is called for the first time
-        if (currentState == null) {
-            config = startServiceAction.getConfig();
-            create();
-        }
-
-        logger.debug("LifeCycleCallbacks:start");
-        //lifecycleObservable.transition(LifeCycleObservable.Transition.START);
+        logger.trace("onBind()");
+        config = (Config) intent.getSerializableExtra(Config.class.getSimpleName());
+        create();
         executeTransitionInThread(LifeCycleObservable.Transition.START);
-        currentState = lifecycleObservable.getState();
+        return new ProxyBinder();
     }
 
     @Override
-    public void stop(StopServiceAction stopServiceAction) {
-        logger.debug("LifeCycleCallbacks:stop");
-        executeTransitionInThread(LifeCycleObservable.Transition.STOP);
-        currentState = lifecycleObservable.getState();
-        stopSelf();
-    }
-
-    /**
-     * As jmq-comms currently stops its components in the main thread, this causes NetworkOnMainThread Exception in Android.
-     * As a work around, the transition is made in a new thread.
-     */
-    private void executeTransitionInThread(@NotNull final LifeCycleObservable.Transition transition) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                lifecycleObservable.transition(transition);
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            logger.error("transition {} interrupted", transition, e);
-            Thread.currentThread().interrupt();
-        }
+    public boolean onUnbind(Intent intent) {
+        logger.trace("onUnbind()");
+        stop();
+        return super.onUnbind(intent);
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        if (config != null && !config.keepServiceAlive()) {
-            stop(null);
-        }
+        logger.trace("onTaskRemoved()");
+        stop();
     }
 
-    private final void create() {
-        logger.debug("Creating Bezirk Service");
+    private void stop() {
+        logger.trace("stop()");
+        executeTransitionInThread(LifeCycleObservable.Transition.STOP);
+        stopSelf();
+    }
+
+    private void create() {
+        logger.trace("Creating Bezirk Service");
 
         // initialize lifecycle manager(Observable) for components(observers) to observe bezirk lifecycle events
         lifecycleObservable = new LifeCycleObservable();
-
-        final LoggingManager loggingManager = new LoggingManager(config);
-        loggingManager.configure();
 
         //initialize data-storage for storing detailed component information like maps, objects
         try {
@@ -172,9 +122,6 @@ public final class ComponentManager extends Service implements LifeCycleCallback
 
         // initialize android shared preferences for storing user preferences
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // initialize action processor to manage intents fired to Bezirk
-        actionProcessor = new ActionProcessor();
 
         if (config.isCommsEnabled()) {
             // initialize comms for communicating between devices over the wifi-network using jmq
@@ -198,8 +145,7 @@ public final class ComponentManager extends Service implements LifeCycleCallback
                 messageHandler, identityManager, null, null, remoteLog);
 
         //initialize proxyServer responsible for managing incoming events from zirks
-        proxyServer = new AndroidProxyServer(identityManager);
-        lifecycleObservable.addObserver(proxyServer);
+        proxyServer = new ProxyServer(identityManager);
 
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
@@ -210,10 +156,12 @@ public final class ComponentManager extends Service implements LifeCycleCallback
     }
 
     //initialize the identity manager
-    void initializeIdentityManager() {
+    private void initializeIdentityManager() {
         identityManager = new BezirkIdentityManager();
         final String aliasString = preferences.getString(ALIAS_KEY, null);
-        if (logger.isDebugEnabled()) logger.debug("aliasString is {}", aliasString);
+        if (logger.isDebugEnabled()) {
+            logger.debug("aliasString is {}", aliasString);
+        }
 
         if (aliasString == null) {
             identityManager.createAndSetIdentity(aliasString);
@@ -224,6 +172,28 @@ public final class ComponentManager extends Service implements LifeCycleCallback
         } else {
             logger.debug("Reusing identity" + aliasString);
             identityManager.createAndSetIdentity(aliasString);
+        }
+    }
+
+    /**
+     * As jmq-comms currently stops its components in the main thread,
+     * this causes NetworkOnMainThread Exception in Android.
+     * As a work around, the transition is made in a new thread.
+     */
+    private void executeTransitionInThread(@NotNull final LifeCycleObservable.Transition transition) {
+        final Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                lifecycleObservable.transition(transition);
+            }
+        });
+        t.setName("lifecycle-transition");
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            logger.error("transition {} interrupted", transition, e);
+            Thread.currentThread().interrupt();
         }
     }
 }

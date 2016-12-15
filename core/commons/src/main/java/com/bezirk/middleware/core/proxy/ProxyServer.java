@@ -104,7 +104,7 @@ public class ProxyServer {
      * Method used to send <code>StreamAction<code/> object to Streaming module.
      * @param streamAction streamAction metadata of streaming information
      */
-    protected void sendStream(@NotNull StreamAction streamAction){
+    public void sendStream(@NotNull StreamAction streamAction){
         //send StreamAction instance to streaming queue
         if(streaming != null){
             streaming.addStreamRecordToQueue(streamAction);

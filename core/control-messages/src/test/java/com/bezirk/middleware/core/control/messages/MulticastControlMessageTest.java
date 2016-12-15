@@ -17,8 +17,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the MulticastControlMessage by retrieving the field values after deserialization.
- *
- * @author AJC6KOR
  */
 
 public class MulticastControlMessageTest {
@@ -62,7 +60,7 @@ public class MulticastControlMessageTest {
         assertEquals("SphereId not equal to the set value.", sphereId, deserializedCtrlMessage.getSphereId());
         assertEquals("Key not equal to the set value.", key, deserializedCtrlMessage.getUniqueKey());
     /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
-	 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
+     * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 	 * 
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());
 	 
@@ -73,8 +71,8 @@ public class MulticastControlMessageTest {
         deserializedCtrlMessage = com.bezirk.middleware.core.control.messages.MulticastControlMessage.deserialize(serializedMessage, com.bezirk.middleware.core.control.messages.MulticastControlMessage.class);
         assertEquals("Discriminator not equal to the set value.", discriminator, deserializedCtrlMessage.getDiscriminator());
         assertEquals("SphereId not equal to the set value.", sphereId, deserializedCtrlMessage.getSphereId());
-	/*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
-	 * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
+    /*--- TO BE UNCOMMENTED ONCE THE BEZIRKSERVICEENDPOINT IS FIXED-----
+     * device null condition should be checked separately before device equals in BezirkServiceEndpoint equals api.
 	 * 
 	 assertEquals("Sender not equal to the set value.",sender, deserializedCtrlMessage.getSender());
 	 

@@ -29,12 +29,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.bezirk.middleware.core.actions.StreamAction;
+import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.actions.ZirkAction;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.IdentifiedEvent;
-import com.bezirk.middleware.messages.Message;
 import com.bezirk.middleware.messages.StreamEvent;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
@@ -47,30 +47,30 @@ import java.util.List;
 import java.util.Map;
 
 public class ZirkMessageReceiver extends BroadcastReceiver {
-    private static final Logger logger = LoggerFactory.getLogger(ZirkMessageReceiver.class);    
+    private static final Logger logger = LoggerFactory.getLogger(ZirkMessageReceiver.class);
 
     @Override
     public void onReceive(Context context, Intent intent) {
         ZirkAction message;
         try {
             message = (ZirkAction) intent.getSerializableExtra("message");
-        } catch (Exception e) { //to prevent app crash due to  java.io.InvalidClassException
+        } catch (Exception e) {
+            // java.io.InvalidClassException is thrown when there is a difference in the serialVersionUID,
+            // see http://docs.oracle.com/javase/7/docs/api/java/io/Serializable.html
+            // As the exception is not thrown by intent.getSerializableExtra(),
+            // it is caught using Exception
             logger.warn("Failed to read serialized message from intent", e);
             return;
         }
 
-        if (isValidRequest(message.getZirkId())) {
-            switch (message.getAction()) {
-                case ACTION_ZIRK_RECEIVE_EVENT:
-                    processEvent((UnicastEventAction) message);
-                    break;
-                case ACTION_ZIRK_RECEIVE_STREAM:
-                    processStream((StreamAction) message);
-                    break;
-                default:
-                    logger.error("Unimplemented action: {}", message.getAction());
-            }
+        if (isValidRequest(message.getZirkId()) && BezirkAction.ACTION_ZIRK_RECEIVE_EVENT.equals(message.getAction())) {
+            processEvent((UnicastEventAction) message);
+        } else if(BezirkAction.ACTION_ZIRK_RECEIVE_STREAM.equals(message.getAction())){
+            processStream((StreamAction) message);
+        }else{
+            logger.error("Unimplemented action: {}", message.getAction());
         }
+
     }
 
     private boolean isValidRequest(ZirkId receivedZirkId) {
@@ -92,9 +92,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
      * @param incomingEvent
      */
     private void processEvent(UnicastEventAction incomingEvent) {
-        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
-
-        final Event event = (Event) Message.fromJson(incomingEvent.getSerializedEvent());
+        final Event event = (Event) Event.fromJson(incomingEvent.getSerializedEvent());
         final String eventName = event.getClass().getName();
 
         if (incomingEvent.isIdentified()) {
@@ -102,13 +100,18 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
             ((IdentifiedEvent) event).setMiddlewareUser(incomingEvent.isMiddlewareUser());
         }
 
-        if (ProxyClient.eventSetMap.containsKey(eventName)) {
-            final List<EventSet> eventSets = ProxyClient.eventSetMap.get(eventName);
-            for (EventSet eventSet : eventSets) {
-                eventSet.getEventReceiver().receiveEvent(event, endpoint);
+        final BezirkZirkEndPoint endpoint = (BezirkZirkEndPoint) incomingEvent.getEndpoint();
+
+        final List<EventSet> subscriptionsForZirk = ProxyClient.zirkEventSubsciptionsMap.get(incomingEvent.getZirkId());
+        final List<EventSet> subscriptionsForEvent = ProxyClient.eventSubscriptionsMap.get(eventName);
+
+        if (subscriptionsForZirk != null && subscriptionsForEvent != null) {
+            for (EventSet eventSet : subscriptionsForZirk) {
+                if (subscriptionsForEvent.contains(eventSet)) {
+                    eventSet.getEventReceiver().receiveEvent(event, endpoint);
+                }
             }
         }
-
     }
 
     /**
@@ -136,7 +139,6 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
                 return true;
             }
         }
-
         return false;
     }
 }

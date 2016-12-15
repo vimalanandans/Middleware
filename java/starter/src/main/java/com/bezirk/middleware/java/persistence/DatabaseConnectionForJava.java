@@ -49,7 +49,7 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     @Override
     public ConnectionSource getDatabaseConnection()
-            throws NullPointerException, SQLException, IOException {
+            throws SQLException, IOException {
         setupDatabase();
         return new JdbcConnectionSource(
                 PersistenceConstants.DB_URL_PATH + dbFilePath + File.separator
@@ -58,7 +58,7 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
 
     @Override
     public Dao<PersistenceRegistry, Integer> getPersistenceDAO()
-            throws NullPointerException, SQLException, IOException {
+            throws SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(),
                     PersistenceRegistry.class);
@@ -69,10 +69,8 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
     private void setupDatabase() throws IOException {
         final File tempDBFile = new File(dbFilePath + File.separator
                 + PersistenceConstants.DB_FILE_NAME);
-        if (!tempDBFile.exists()) {
-            if (!tempDBFile.createNewFile()) {
-                logger.error("Failed to create database file{}", tempDBFile.getAbsolutePath());
-            }
+        if (!tempDBFile.exists() && !tempDBFile.createNewFile()) {
+            logger.error("Failed to create database file{}", tempDBFile.getAbsolutePath());
         }
     }
 

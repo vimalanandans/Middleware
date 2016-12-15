@@ -11,8 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This testcase verifies the equals and hashcode apis of ZirkId.
- *
- * @author AJC6KOR
  */
 public class ZirkIdTest {
 

@@ -7,8 +7,6 @@ import static org.junit.Assert.assertNotEquals;
 
 /**
  * This testcase verifies the RecipientSelector by setting the properties and retrieving them.
- *
- * @author AJC6KOR
  */
 public class RecipientSelectorTest {
 

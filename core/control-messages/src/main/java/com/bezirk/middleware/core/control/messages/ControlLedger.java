@@ -25,14 +25,14 @@ package com.bezirk.middleware.core.control.messages;
 
 /**
  * Control Ledger holds the control message related info for the internal data set
- *
  */
 public class ControlLedger implements Ledger {
     private ControlMessage message;
-    private String serializedMessage;   // used on receiving end only
+    private String serializedMessage;
     private byte[] encryptedMessage;
-    private Boolean isMessageFromHost = true; // usage not clear
-    private String sphereId;    // Fixme Control Message is already having sphere id.
+    private Boolean isMessageFromHost = true;
+    // Fixme Control Message is already has a sphere id.
+    private String sphereId;
     private Header header;
 
     public ControlMessage getMessage() {
@@ -59,7 +59,6 @@ public class ControlLedger implements Ledger {
         this.encryptedMessage = encryptedMessage == null ? null : encryptedMessage.clone();
     }
 
-
     public String getSphereId() {
         return sphereId;
     }
@@ -68,12 +67,14 @@ public class ControlLedger implements Ledger {
         this.sphereId = sphereName;
     }
 
-    @Deprecated //usage is not clear
+    //usage is not clear
+    @Deprecated
     public Boolean getIsMessageFromHost() {
         return isMessageFromHost;
     }
 
-    @Deprecated //usage is not clear
+    //usage is not clear
+    @Deprecated
     public void setIsMessageFromHost(Boolean isMessageFromHost) {
         this.isMessageFromHost = isMessageFromHost;
     }

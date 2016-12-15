@@ -40,7 +40,7 @@ public class FileLogger {
     private static final Logger logger = LoggerFactory.getLogger(ReceiverQueueProcessor.class);
     private static final String RECIPIENT_MULTICAST_VALUE = "MULTI-CAST";
     private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss:SSS", Locale.GERMANY);
-    private File file = null;
+    private File file;
 
     public FileLogger() {
         final String filePath = DataPathConfig.getDataPath() + File.separator + "log" + File.separator;
@@ -49,6 +49,22 @@ public class FileLogger {
                 Locale.getDefault());
 
         file = new File(filePath + dateFormat.format(new Date()) + ".txt");
+    }
+
+    private static String getSphereNameFromSphereId(final String sphereId) {
+        logger.debug("Getting the sphere name from the sphereId");
+        final StringBuilder tempSphereName = new StringBuilder();
+        SphereAPI sphereAPI = null;
+
+        if (sphereAPI != null && sphereAPI.getSphere(sphereId) != null &&
+                sphereAPI.getSphere(sphereId).getSphereName() != null) {
+            logger.debug("sphereAPI is not null");
+            tempSphereName.append(sphereAPI.getSphere(sphereId).getSphereName());
+        } else {
+            logger.debug("sphereAPI is null");
+        }
+
+        return tempSphereName.toString();
     }
 
     public void handleLogMessage(RemoteLoggingMessage remoteLogMessage) {
@@ -65,8 +81,7 @@ public class FileLogger {
             out.close();
             fileOut.close();
         } catch (IOException e) {
-            if (logger.isErrorEnabled()) logger.error("Failed to write remote logger message to " +
-                    "file " + file.getAbsolutePath(), e);
+            logger.error("Failed to write remote logger message to file " + file.getAbsolutePath(), e);
         } finally {
             try {
                 if (fileOut != null) fileOut.close();
@@ -76,39 +91,17 @@ public class FileLogger {
         }
     }
 
-    private String getSphereNameFromSphereId(final String sphereId) {
-        logger.debug("Getting the sphere name from the sphereId");
-        final StringBuilder tempSphereName = new StringBuilder();
-        //SphereAPI sphereAPI=new SphereServiceManager();
-        SphereAPI sphereAPI = null;
-        try {
-            if (null != sphereAPI) {
-                logger.debug("sphereAPI is not null");
-                tempSphereName.append(sphereAPI.getSphere(sphereId).getSphereName());
-            } else {
-                logger.debug("sphereAPI is null");
-            }
-        } catch (NullPointerException ne) {
-            logger.error("Error in fetching sphereName from sphere UI", ne);
-            tempSphereName.append("Un-defined");
-        }
-        return tempSphereName.toString();
-    }
-
     /**
      * Returns the DeviceName associated with the deviceId
      *
      * @param deviceId Device Id whose name is to be fetched
      * @return DeviceName if exists, null otherwise
      */
-    private String getDeviceNameFromDeviceId(final String deviceId) {
+    private static String getDeviceNameFromDeviceId(final String deviceId) {
         if (deviceId == null) {
             return RECIPIENT_MULTICAST_VALUE;
         }
-        //SphereServiceAccess sphereServiceAccess = new SphereServiceManager();
-        //final String tempDeviceName = sphereServiceAccess.getDeviceNameFromSphere(deviceId);
-        //return (null == tempDeviceName) ? deviceId : tempDeviceName;
+
         return deviceId;
     }
-
 }

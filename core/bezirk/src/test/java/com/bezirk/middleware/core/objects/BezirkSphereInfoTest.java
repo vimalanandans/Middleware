@@ -15,8 +15,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * This testcase verifies the BezirkSphereInfo by setting the properties and retrieving them.
- *
- * @author AJC6KOR
  */
 public class BezirkSphereInfoTest {
 

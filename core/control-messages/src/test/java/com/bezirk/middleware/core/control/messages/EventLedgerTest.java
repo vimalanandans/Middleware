@@ -15,8 +15,6 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * This testCase verifies the ControlLedger POJO by retrieving the field values using getters.
- *
- * @author AJC6KOR
  */
 public class EventLedgerTest {
     private static final Logger logger = LoggerFactory.getLogger(EventLedgerTest.class);
@@ -57,7 +55,7 @@ public class EventLedgerTest {
 
         com.bezirk.middleware.core.control.messages.EventLedger eventLedger = prepareEventLedger();
 
-       // assertArrayEquals("CheckSum not equal to the set value.", checksum, eventLedger.getChecksum());
+        // assertArrayEquals("CheckSum not equal to the set value.", checksum, eventLedger.getChecksum());
         //assertArrayEquals("DataOnWire not equal to the set value.", dataOnWire, eventLedger.getDataOnWire());
         assertArrayEquals("EncryptedHeader not equal to the set value.", encryptedHeader, eventLedger.getEncryptedHeader());
         assertArrayEquals("EncryptedMessage not equal to the set value.", encryptedMessage, eventLedger.getEncryptedMessage());

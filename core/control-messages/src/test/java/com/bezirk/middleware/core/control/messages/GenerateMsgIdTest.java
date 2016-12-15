@@ -44,9 +44,9 @@ public class GenerateMsgIdTest {
 
         ZirkId serviceId = new ZirkId("ServiceA");
         BezirkZirkEndPoint sep = new BezirkZirkEndPoint("DeviceA", serviceId);
-        String eventId = com.bezirk.middleware.core.control.messages.GenerateMsgId.generateEvtId(sep);
-        sep.device = "DeviceB";
-        assertNotEquals("Same messageId generated for different devices", eventId, com.bezirk.middleware.core.control.messages.GenerateMsgId.generateEvtId(sep));
+        String eventId = GenerateMsgId.generateEvtId(sep);
+        sep.setDevice("DeviceB");
+        assertNotEquals("Same messageId generated for different devices", eventId, GenerateMsgId.generateEvtId(sep));
 
     }
 
@@ -55,7 +55,7 @@ public class GenerateMsgIdTest {
 
         int ctrlId = com.bezirk.middleware.core.control.messages.GenerateMsgId.generateCtrlId();
 
-        assertNotEquals("Same controlId generated multiple times.", ctrlId, com.bezirk.middleware.core.control.messages.GenerateMsgId.generateCtrlId());
+        assertNotEquals("Same controlId generated multiple times.", ctrlId, GenerateMsgId.generateCtrlId());
 
 
     }
