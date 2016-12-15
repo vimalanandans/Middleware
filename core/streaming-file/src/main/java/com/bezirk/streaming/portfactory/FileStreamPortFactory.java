@@ -32,8 +32,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
- *
+ *  Port factory will handle the ports in given range. Here we can retreive active port
+ *  release the unused port, These ports map will have portKey {@link com.bezirk.streaming.StreamRecord#streamId}
+ *  and port as value.
  */
 
 public class FileStreamPortFactory{
@@ -163,13 +164,4 @@ public class FileStreamPortFactory{
 
     }
 
-    /**
-     * return number of active port.
-     * @return number of active port
-     */
-    public int getNoOfActivePorts() {
-        synchronized (this) {
-            return activePorts.size();
-        }
-    }
 }

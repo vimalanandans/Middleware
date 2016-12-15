@@ -12,10 +12,13 @@ import com.bezirk.middleware.core.streaming.StreamReceiveEvent;
 import com.bezirk.middleware.core.streaming.StreamReceiverEventSet;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.jaredrummler.android.device.DeviceName;
 
 public class StreamReceiverActivity extends AppCompatActivity {
 
     private Bezirk bezirk;
+    private static final String deviceName = DeviceName.getDeviceName();
+    private static final String SUBSCRIBER_ID = deviceName + ":STREAM_API:Subscriber";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,7 @@ public class StreamReceiverActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //register the bezirk middleware
-        bezirk = BezirkMiddleware.registerZirk("Stream_Receiver_Zirk");
+        bezirk = BezirkMiddleware.registerZirk(SUBSCRIBER_ID);
 
         //################ Discover EVENT SET ###########################//
         //prep the StreamReceiverEventSet and multicast to identify the receivers.

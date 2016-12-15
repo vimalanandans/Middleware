@@ -28,6 +28,7 @@ import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.StreamEvent;
 import com.bezirk.middleware.streaming.FileStream;
 import com.bezirk.middleware.streaming.Stream;
+import com.jaredrummler.android.device.DeviceName;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,8 @@ import java.util.List;
 
 public class StreamingActivity extends AppCompatActivity {
 
+    private static final String deviceName = DeviceName.getDeviceName();
+    private static final String PUBLISHER_ID = deviceName + ":STREAM_API:Publisher";
     private TextView mTextViewFilePath;
     private static final int RESULT_LOAD_VIDEO = 222;
     private String filePath;
@@ -79,7 +82,7 @@ public class StreamingActivity extends AppCompatActivity {
         });
 
         //register the bezirk middleware
-        bezirk = BezirkMiddleware.registerZirk("Stream_Sending_Zirk");
+        bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
 
 
         //on send click
