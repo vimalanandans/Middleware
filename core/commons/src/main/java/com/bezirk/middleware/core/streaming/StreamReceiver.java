@@ -23,7 +23,7 @@
 package com.bezirk.middleware.core.streaming;
 
 /**
- * Interface for incoming Stream request events, incoming Stream Request will be be
+ * Interface for incoming Stream request events, incoming Stream Request will be
  * given to observer <code>FileStreamRequestObserver</code>
  */
 

@@ -54,7 +54,7 @@ public class StreamBook {
      */
     public void updateStreamRecordInBook(Short streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port, String deviceIp){
         //get the stream based on the id and update the status
-        StreamRecord streamRecord = streamingQueue.get(streamKey);
+        final StreamRecord streamRecord = streamingQueue.get(streamKey);
         streamRecord.setStreamRecordStatus(updateStatus);
 
         if(port != null){

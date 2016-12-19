@@ -26,8 +26,8 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.streaming.Stream;
 
 /**
- * This class will have all the metadata information of streaming. which will be passed as intent
- * to the android receiver .
+ * This class will have all the metadata infingormation of stream. which will be passed as intent
+ * to the android receiver.
  */
 
 public class StreamAction extends ZirkAction {
@@ -40,6 +40,7 @@ public class StreamAction extends ZirkAction {
     public StreamAction(ZirkId zirkId){
         super(zirkId);
     }
+
     public StreamAction(ZirkId zirkId, short streamId, Stream stream, BezirkAction bezirkAction){
         super(zirkId);
         this.stream  = stream;

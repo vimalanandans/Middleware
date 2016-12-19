@@ -26,8 +26,8 @@ import com.bezirk.middleware.core.streaming.StreamRequest;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
- * This will be Streaming Request type sent by the Sender with {@link StreamRecord} metadata.
- *
+ * This will be Streaming Request sent by the Sender{@link com.bezirk.streaming.sender.FileStreamSenderThread}
+ * with {@link StreamRecord} metadata.
  */
 
 public class FileStreamRequest extends StreamRequest {
@@ -35,10 +35,10 @@ public class FileStreamRequest extends StreamRequest {
     /**
      * Name of the file that needs to be pushed on the recipient
      */
-    private StreamRecord streamRecord = null;
+    private final StreamRecord streamRecord;
 
     public FileStreamRequest(BezirkZirkEndPoint sender, String sphereId, StreamRecord streamRecord){
-        super(sender, streamRecord.getRecipientSEP(), sphereId);
+        super(sender, streamRecord.getRecipientServiceEndPoint(), sphereId);
         this.streamRecord = streamRecord;
     }
 

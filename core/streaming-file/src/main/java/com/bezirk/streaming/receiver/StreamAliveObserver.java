@@ -133,7 +133,7 @@ class StreamAliveObserver implements Observer {
         //sphere will be DEFAULT as of now
         controlLedger.setSphereId("DEFAULT");
 
-        FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderSEP(), "DEFAULT", streamRecord);
+        FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderServiceEndPoint(), "DEFAULT", streamRecord);
         controlLedger.setMessage(streamResponse);
         controlLedger.setSerializedMessage(gson.toJson(streamResponse));
 

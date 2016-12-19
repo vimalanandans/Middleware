@@ -19,33 +19,31 @@ public class StreamingTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_streaming_test);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //setup auto testing elements
-        TextView senderTextView = (TextView) findViewById(R.id.stream_sender_tv);
+        final TextView senderTextView = (TextView) findViewById(R.id.stream_sender_tv);
         senderTextView.setText(STREAM_SENDING_MESSAGE);
 
-        //setup auto testing elements
-        TextView receiverTextView = (TextView) findViewById(R.id.stream_receiver_tv);
+        final TextView receiverTextView = (TextView) findViewById(R.id.stream_receiver_tv);
         receiverTextView.setText(STREAM_RECEIVING_MESSAGE);
 
 
-        Button streamSendButton = (Button) findViewById(R.id.stream_sender);
+        final Button streamSendButton = (Button) findViewById(R.id.stream_sender);
         streamSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StreamingTestActivity.this, StreamingActivity.class);
+                final Intent intent = new Intent(StreamingTestActivity.this, StreamingActivity.class);
                 startActivity(intent);
             }
         });
 
-        Button streamReceiveButton = (Button) findViewById(R.id.stream_receiver);
+        final Button streamReceiveButton = (Button) findViewById(R.id.stream_receiver);
         streamReceiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StreamingTestActivity.this, StreamReceiverActivity.class);
+                final Intent intent = new Intent(StreamingTestActivity.this, StreamReceiverActivity.class);
                 startActivity(intent);
             }
         });

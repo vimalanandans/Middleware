@@ -38,10 +38,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ProxyServer {
+    private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
     private PubSubBrokerZirkServicer pubSubBrokerService;
     private final IdentityManager identityManager;
     private Streaming streaming;
-    private static final Logger logger = LoggerFactory.getLogger(ProxyServer.class);
 
     public ProxyServer(IdentityManager identityManager) {
         this.identityManager = identityManager;
@@ -109,7 +109,7 @@ public class ProxyServer {
         if(streaming != null){
             streaming.addStreamRecordToQueue(streamAction);
         }else{
-            logger.error("Streaming module was not initialized!!!!. Ensure to initialize Streaming module in ComponentManager!!!");
+            throw new IllegalStateException("Streaming Module is not Initialized");
         }
 
     }

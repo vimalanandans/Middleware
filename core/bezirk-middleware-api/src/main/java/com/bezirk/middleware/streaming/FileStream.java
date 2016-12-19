@@ -33,14 +33,10 @@ import java.io.Serializable;
  */
 
 public class FileStream extends Stream implements Serializable {
-    private File file;
+    private final File file;
 
     public FileStream(ZirkEndPoint zirkEndPoint, File file){
         super(zirkEndPoint);
-        this.file = file;
-    }
-
-    public void setFile(File file) {
         this.file = file;
     }
 

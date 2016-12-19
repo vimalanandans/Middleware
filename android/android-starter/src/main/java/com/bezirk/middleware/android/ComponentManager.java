@@ -150,8 +150,9 @@ public final class ComponentManager extends Service {
         // TODO initialize in constructor instead.
         proxyServer.setPubSubBrokerService(pubSubBroker);
 
-        //initialize streaming, Remember DI should be way forward.
-        Streaming streaming = new FileStreaming(comms, pubSubBroker);
+        //initialize streaming
+        //TODO Remember Dependency Injection should be introduced as good practice.
+        final Streaming streaming = new FileStreaming(comms, pubSubBroker);
         proxyServer.setStreaming(streaming);
     }
 

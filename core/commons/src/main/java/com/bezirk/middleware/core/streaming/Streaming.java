@@ -25,8 +25,16 @@ package com.bezirk.middleware.core.streaming;
 import com.bezirk.middleware.core.actions.StreamAction;
 
 /**
- * Interface for Streaming module. All defining modules have to implement the below methods.
+ * Generic Streaming module interface.
+ * A given type of Streaming will be instantiated in <code>ComponentManager</code>. every stream request from
+ * Zirk {@link StreamAction} will be passed to Streaming implementation.
  *
+ * Every incoming stream request will be passed to method {@link #addStreamRecordToQueue(StreamAction)}. In the implementation this {@link StreamAction}
+ * will be converted to <code>StreamRecord</code> and stored in a ledger and a {@link StreamRequest} will be sent to the receiver {@link StreamAction#getStreamRequest().getRecipientEndPoint}
+ *
+ * The ledger will be of type <code>StreamBook</code> which will store all the <code>StreamRecord</code>
+ *
+ * A incremental file stream module implementation for Streaming interface is <code>FileStreaming</code>.
  */
 
 public interface Streaming {
@@ -37,7 +45,8 @@ public interface Streaming {
     boolean interruptStream(final String streamKey);
 
     /**
-     * Adds a Stream Record to stream book.
+     * Adds streaming request to StreamBook for processing.
+     * <code>StreamBook</code> is a registry of all the stream requests.
      */
     boolean addStreamRecordToQueue(StreamAction streamAction);
 

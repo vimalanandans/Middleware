@@ -38,14 +38,12 @@ public abstract class Stream extends Message implements Serializable{
     private ZirkEndPoint recipientEndPoint;
     private transient StreamEventReceiver streamEventReceiver = null;
 
-    //default constructor
     public Stream(){
         //providing default constructor for parcelable exception in android , do not use this.
     }
     Stream(ZirkEndPoint recipientEndPoint){
         this.recipientEndPoint = recipientEndPoint;
     }
-
 
     public ZirkEndPoint getRecipientEndPoint() {
         return recipientEndPoint;

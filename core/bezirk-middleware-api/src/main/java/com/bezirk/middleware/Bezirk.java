@@ -118,10 +118,15 @@ public interface Bezirk {
     void setLocation(Location location);
 
     /**
-     * This method is used to inform the middleware for streaming. Streaming follows Unicast model to transfer the data.
-     * Prepare a instance of {@link Stream} with {@link Stream#recipientEndPoint}
-     * Use {@link Stream.StreamEventReceiver} to set the receiver and receive the callbacks with {@link com.bezirk.middleware.messages.StreamEvent#streamRecordStatus}
+     * This method is used to inform the middleware for streaming. Streaming follows Uni-Cast model to transfer the data.
+     * Prepare a instance of {@link Stream} with {@link Stream#recipientEndPoint} and use {@link Stream.StreamEventReceiver}
+     * to set the receiver and receive the callbacks with {@link com.bezirk.middleware.messages.StreamEvent#streamRecordStatus}
      * to handle callbacks.
+     *
+     * You will get the updated status to your stream request from the receiver. Received status could be.
+     * BUSY -  indicating the receipient is busy, All the active ports are consumed.
+     * COMPLETED -  Indicates that file transfer was complete.
+     * ERROR - Indicates that an error occured during streaming
      *
      * @param streamRequest object which will have stream request metadata.
      */

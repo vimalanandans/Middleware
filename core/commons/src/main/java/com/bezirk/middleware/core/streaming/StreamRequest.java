@@ -26,23 +26,14 @@ import com.bezirk.middleware.core.control.messages.UnicastControlMessage;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 
 /**
- *
- *
+ * StreamRequest is used to intimate the receiver middleware streaming module of a incoming stream request.
+ * This abstract class will have common properties of implementing request(s)
  */
 
 public abstract class StreamRequest extends UnicastControlMessage {
 
-    /**
-     * Discriminator that uniquely defines the Control message!
-     */
     private static final Discriminator discriminator = Discriminator.STREAM_REQUEST;
 
-    /**
-     * default constructor
-     * @param sender BezirkZirkEndPoint of sender
-     * @param receiver BezirkZirkEndPoint of receiver
-     * @param sphereId sphereID the request belong to.
-     */
     public StreamRequest(BezirkZirkEndPoint sender, BezirkZirkEndPoint receiver, String sphereId){
         super(sender, receiver, sphereId, discriminator, true );
     }

@@ -11,7 +11,7 @@ import com.bezirk.middleware.streaming.StreamController;
 class FileStreamController extends StreamController {
 
     //primary key for streaming.
-    private Short streamId;
+    private final Short streamId;
 
     //constructor
     FileStreamController(Short streamId){
@@ -21,7 +21,11 @@ class FileStreamController extends StreamController {
 
     @Override
     public void stopStreaming() {
-        //implement stopping streaming here..
+        //TODO implement stopping streaming here..
+        /*
+        * Call this method from Zirk,
+        * Implement here to give a call to streaming module and interrupt the stream sending or stream receiving thread instance.
+        */
     }
 
     public Short getStreamId() {

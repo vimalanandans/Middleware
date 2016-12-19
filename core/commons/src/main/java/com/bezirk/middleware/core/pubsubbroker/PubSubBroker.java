@@ -374,10 +374,8 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
     }
 
     @Override
-    public boolean processStreamEvent(StreamAction streamAction) {
+    public void processStreamEvent(StreamAction streamAction) {
         msgHandler.onIncomingStreamEvent(streamAction);
-
-        return true;
     }
 
     private void triggerMessageHandler(@NotNull final EventLedger eLedger,
@@ -497,7 +495,7 @@ public class PubSubBroker implements PubSubBrokerZirkServicer, PubSubBrokerServi
         try {
             pubSubBrokerStorage.persistPubSubBrokerRegistry();
         } catch (Exception e) {
-            logger.error("Error in storing data \n", e);
+            logger.error("Error in storing data", e);
         }
     }
 }

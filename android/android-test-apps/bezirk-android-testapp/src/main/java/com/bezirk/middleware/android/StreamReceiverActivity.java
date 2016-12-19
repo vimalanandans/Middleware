@@ -17,14 +17,14 @@ import com.jaredrummler.android.device.DeviceName;
 public class StreamReceiverActivity extends AppCompatActivity {
 
     private Bezirk bezirk;
-    private static final String deviceName = DeviceName.getDeviceName();
-    private static final String SUBSCRIBER_ID = deviceName + ":STREAM_API:Subscriber";
+    private static final String DEVICE_NAME = DeviceName.getDeviceName();
+    private static final String SUBSCRIBER_ID = DEVICE_NAME + ":STREAM_API:Subscriber";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stream_receiver);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -33,22 +33,18 @@ public class StreamReceiverActivity extends AppCompatActivity {
 
         //################ Discover EVENT SET ###########################//
         //prep the StreamReceiverEventSet and multicast to identify the receivers.
-        StreamReceiverEventSet receiverEventSet = new StreamReceiverEventSet();
+        final StreamReceiverEventSet receiverEventSet = new StreamReceiverEventSet();
 
         receiverEventSet.setEventReceiver(new EventSet.EventReceiver() {
             @Override
             public void receiveEvent(Event event, ZirkEndPoint sender) {
-                //got a response from the receiver
                 if (event instanceof StreamReceiveEvent) {
-
-                    //reply to the sender StreamPublishEvent
-                    StreamPublishEvent streamPublishEvent = new StreamPublishEvent("stream");
+                    final StreamPublishEvent streamPublishEvent = new StreamPublishEvent("stream");
                     bezirk.sendEvent(sender, streamPublishEvent);
                 }
             }
         });
 
-        //subscribe to the event set
         bezirk.subscribe(receiverEventSet);
 
     }

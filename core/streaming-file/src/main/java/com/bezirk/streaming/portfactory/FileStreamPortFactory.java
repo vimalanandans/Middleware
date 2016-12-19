@@ -42,7 +42,7 @@ public class FileStreamPortFactory{
     private final int startingPort;
     private final Set<Integer> activePorts;
     private final int streamMax;
-    private int lastAssignedPort; // used to assign the next port when the request comes!
+    private int lastAssignedPort;
 
     //holds the value for port number assigned for a stream id.
     private final Map<Short, Integer> portsMap = new HashMap<>();

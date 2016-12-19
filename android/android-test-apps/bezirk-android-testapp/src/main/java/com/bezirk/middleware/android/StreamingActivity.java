@@ -39,67 +39,59 @@ import java.util.List;
 
 public class StreamingActivity extends AppCompatActivity {
 
-    private static final String deviceName = DeviceName.getDeviceName();
-    private static final String PUBLISHER_ID = deviceName + ":STREAM_API:Publisher";
-    private TextView mTextViewFilePath;
+    private static final String DEVICE_NAME = DeviceName.getDeviceName();
+    private static final String PUBLISHER_ID = DEVICE_NAME + ":STREAM_API:Publisher";
     private static final int RESULT_LOAD_VIDEO = 222;
+    private static final Logger logger = LoggerFactory.getLogger(StreamingActivity.class);
+
+    private final List<StreamDataModel> dataModels = new ArrayList<>();
+    private TextView textViewFilePath;
     private String filePath;
-    private final List<StreamDataModel> list = new ArrayList<>();
     private StreamAdapter arrayAdapter;
     private static ZirkEndPoint recipientEndpoint;
-    //checkBox to see if the Encryption is enabled!!!
-
-    //bezirk Instance
     private Bezirk bezirk;
-
-    //logger
-    private static final Logger logger = LoggerFactory.getLogger(StreamingActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
+
+        final Button send = (Button) findViewById(R.id.sendButton);
+        final Button discover = (Button) findViewById(R.id.discoverRecipientButton);
+        final ListView listView = (ListView) findViewById(R.id.discoveredlist);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setContentView(R.layout.activity_streaming);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTextViewFilePath = (TextView) findViewById(R.id.stream_receiver_activity);
-        Button send = (Button) findViewById(R.id.sendButton);
-        Button discover = (Button) findViewById(R.id.discoverRecipientButton);
-
-
-        final ListView listView = (ListView) findViewById(R.id.discoveredlist);
-        arrayAdapter = new StreamAdapter(getApplicationContext(), R.layout.simple_text_view, R.id.simple_textView, list);
+        textViewFilePath = (TextView) findViewById(R.id.stream_receiver_activity);
+        arrayAdapter = new StreamAdapter(getApplicationContext(), R.layout.simple_text_view, R.id.simple_textView, dataModels);
         listView.setAdapter(arrayAdapter);
 
         //On item click
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                StreamDataModel dataModel = list.get(position);
+                StreamDataModel dataModel = dataModels.get(position);
                 recipientEndpoint = dataModel.getReceiverEndpoint();
             }
         });
 
-        //register the bezirk middleware
-        bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
-
-
-        //on send click
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (filePath != null) {
-                    File file = new File(filePath);
-                    Stream fileStream = new FileStream(recipientEndpoint, file);
+                    final File file = new File(filePath);
+                    final Stream fileStream = new FileStream(recipientEndpoint, file);
                     fileStream.setEventReceiver(new Stream.StreamEventReceiver() {
                         @Override
                         public void receiveStreamEvent(StreamEvent event) {
-                            Toast.makeText(getApplicationContext(),"Status :: "+event.getStreamRecordStatus() ,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Status :: " + event.getStreamRecordStatus(), Toast.LENGTH_SHORT).show();
                         }
                     });
 
-                    //send streaming
                     bezirk.sendStream(fileStream);
 
                 } else {
@@ -109,15 +101,14 @@ public class StreamingActivity extends AppCompatActivity {
         });
 
 
-        //on discover click
         discover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //clear the zirkendpoint list view.
-                list.clear();
+                //clear the zirkendpoint dataModels view.
+                dataModels.clear();
 
                 //Multicast the StreamReceiveEvent
-                StreamReceiveEvent streamReceiveEvent = new StreamReceiveEvent();
+                final StreamReceiveEvent streamReceiveEvent = new StreamReceiveEvent();
                 bezirk.sendEvent(streamReceiveEvent);
 
 
@@ -127,15 +118,15 @@ public class StreamingActivity extends AppCompatActivity {
                 streamPublisherEventSet.setEventReceiver(new EventSet.EventReceiver() {
                     @Override
                     public void receiveEvent(Event event, ZirkEndPoint sender) {
-                        logger.debug("received subscriber" +sender.toString());
+                        logger.debug("received subscriber {}", sender.toString());
 
                         //got a response from the receiver
                         if (event instanceof StreamPublishEvent) {
-                            StreamPublishEvent streamPublishEvent = (StreamPublishEvent) event;
+                            final StreamPublishEvent streamPublishEvent = (StreamPublishEvent) event;
 
                             //show the receiverID to UI
-                            StreamDataModel streamDataModel = new StreamDataModel(streamPublishEvent.getSubscriberId(), sender);
-                            list.add(streamDataModel);
+                            final StreamDataModel streamDataModel = new StreamDataModel(streamPublishEvent.getSubscriberId(), sender);
+                            dataModels.add(streamDataModel);
                             arrayAdapter.notifyDataSetChanged();
                         }
                     }
@@ -150,7 +141,7 @@ public class StreamingActivity extends AppCompatActivity {
 
     public void fileChooseButtonClick(View view) {
 
-        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        final Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setType("video/*");
         startActivityForResult(intent, StreamingActivity.RESULT_LOAD_VIDEO);
     }
@@ -160,15 +151,15 @@ public class StreamingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_VIDEO && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Video.Media.DATA};
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            final Uri selectedImage = data.getData();
+            final String[] filePathColumn = {MediaStore.Video.Media.DATA};
+            final Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             if (cursor != null) {
                 cursor.moveToFirst();
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                final int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 this.filePath = cursor.getString(columnIndex);
 
-                mTextViewFilePath.setText(cursor.getString(columnIndex));
+                textViewFilePath.setText(cursor.getString(columnIndex));
                 cursor.close();
             }
 
@@ -177,8 +168,8 @@ public class StreamingActivity extends AppCompatActivity {
     }
 
     class StreamDataModel {
-        private String subscriberId;
-        private ZirkEndPoint receiverEndpoint;
+        final private String subscriberId;
+        final private ZirkEndPoint receiverEndpoint;
 
         StreamDataModel(String subscriberId, ZirkEndPoint receiverEndpoint) {
             this.subscriberId = subscriberId;

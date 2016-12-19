@@ -217,17 +217,21 @@ public class ProxyClient implements Bezirk {
     @Override
     public StreamController sendStream(Stream streamRequest){
         //generate a unique streamID, this will be the primary key for stream access.
-        Short streamID;
-        Integer intStreamID = (streamIdCounter++) % Short.MAX_VALUE;
+        final Integer intStreamID = (streamIdCounter++) % Short.MAX_VALUE;
+        final Short streamID = intStreamID.shortValue();
+        StreamController fileStreamController = null;
+        if(!streamSetMap.containsKey(streamID)){
+            fileStreamController = new FileStreamController(streamID);
 
-        streamID = intStreamID.shortValue();
-        StreamController fileStreamController = new FileStreamController(streamID);
+            final BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
+            proxyServer.sendStream(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
 
-        BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
-        proxyServer.sendStream(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
+            //add the streamReciver to streamSetMap, used by the ZirkMessageReceiver to give callbacks.
+            streamSetMap.put(streamID, streamRequest.getStreamEventReceiver());
+        }else{
+            logger.error("Stream ID already exists in the StreamMap {}", streamID);
+        }
 
-        //add the streamReciver to streamSetMap, used by the ZirkMessageReceiver to give callbacks.
-        streamSetMap.put(streamID, streamRequest.getStreamEventReceiver());
         return fileStreamController;
     }
 

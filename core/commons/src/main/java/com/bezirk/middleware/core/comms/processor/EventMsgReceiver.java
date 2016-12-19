@@ -40,5 +40,5 @@ public interface EventMsgReceiver {
      */
     boolean processEvent(final EventLedger eLedger);
 
-    boolean processStreamEvent(final StreamAction streamAction);
+    void processStreamEvent(final StreamAction streamAction);
 }

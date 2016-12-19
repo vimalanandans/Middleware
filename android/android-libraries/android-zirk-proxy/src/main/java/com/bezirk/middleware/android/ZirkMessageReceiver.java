@@ -51,7 +51,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        ZirkAction message;
+        final ZirkAction message;
         try {
             message = (ZirkAction) intent.getSerializableExtra("message");
         } catch (Exception e) {
@@ -88,8 +88,8 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
     }
 
     /**
-     *
-     * @param incomingEvent
+     * Gives a callback with updated event status to the receiver.
+     * @param incomingEvent incoming Unicast event
      */
     private void processEvent(UnicastEventAction incomingEvent) {
         final Event event = (Event) Event.fromJson(incomingEvent.getSerializedEvent());
@@ -124,9 +124,13 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         if (ProxyClient.streamSetMap.containsKey(streamID)) {
             final Stream.StreamEventReceiver receiver = ProxyClient.streamSetMap.get(streamID);
             if(receiver != null){
-                StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId());
+                final StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId());
                 receiver.receiveStreamEvent(streamEvent);
+            }else{
+                logger.error("receiver object is null for stream request in stream map for Stream ID {}", streamID);
             }
+        }else{
+            logger.error("Stream Map does not contain stream request for Stream ID {}", streamID);
         }
 
     }

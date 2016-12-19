@@ -107,14 +107,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         //setup stream testing elements
-        TextView streamTextView = (TextView) findViewById(R.id.stream_test_tv);
-        Button streamTestButton = (Button) findViewById(R.id.stream_test_button);
+        final TextView streamTextView = (TextView) findViewById(R.id.stream_test_tv);
+        final Button streamTestButton = (Button) findViewById(R.id.stream_test_button);
 
         streamTextView.setText(STREAM_TESTING_MESSAGE);
         streamTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, StreamingTestActivity.class);
+                final Intent intent = new Intent(HomeActivity.this, StreamingTestActivity.class);
                 startActivity(intent);
             }
         });

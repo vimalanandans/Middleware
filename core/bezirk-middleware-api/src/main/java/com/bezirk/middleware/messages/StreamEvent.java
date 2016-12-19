@@ -22,27 +22,20 @@
  */
 package com.bezirk.middleware.messages;
 
-import java.io.File;
+import com.bezirk.middleware.streaming.Stream;
 
 /**
- *
- *
+ * StreamEvent is a callback object given to Zirk when there is  an update to StreamStatus.
+ * An instance will be created in <code>ZirkMessageReceiver</code> and is passed to {@link com.bezirk.middleware.streaming.Stream#setEventReceiver(Stream.StreamEventReceiver)}
  */
 
 public class StreamEvent {
 
-    //stream status
-    private StreamRecordStatus streamRecordStatus;
+    private final StreamRecordStatus streamRecordStatus;
+    private final Short streamId;
 
-    //streamfile information
-    /*private File file;*/
-
-    //primary key of the stream information
-    private Short streamId;
-
-    public StreamEvent(String streamRecordStatus, /*File file, */Short streamId){
+    public StreamEvent(String streamRecordStatus, Short streamId){
         this.streamRecordStatus = StreamRecordStatus.valueOf(streamRecordStatus);
-        /*this.file = file;*/
         this.streamId = streamId;
     }
 
@@ -54,13 +47,14 @@ public class StreamEvent {
         return streamRecordStatus;
     }
 
-    /* Streaming Status indicates the status of the Streams.
-                     * ALIVE -  Status for sender, when we has initiated a request.
-                     * ADDRESSED   -  indicating the recipient has received the request.
-                     * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
-                     * BUSY -  indicating the receipient is busy, All the active ports are consumed.
-                     * COMPLETED -  Indicates that file transfer was complete.
-                     * */
+    /** Streaming Status indicates the status of the Streams.
+     * ALIVE -  Status for sender, when we has initiated a request.
+     * ADDRESSED   -  indicating the recipient has received the request.
+     * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
+     * BUSY -  indicating the receipient is busy, All the active ports are consumed.
+     * COMPLETED -  Indicates that file transfer was complete.
+     * ERROR - Indicates that an error occured during streaming
+     */
     public enum StreamRecordStatus {
         ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED, ERROR
 

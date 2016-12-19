@@ -74,7 +74,6 @@ class FileStreamRequestObserver extends Observable implements StreamReceiver, Zi
         streamAction.setBezirkAction(BezirkAction.ACTION_ZIRK_RECEIVE_STREAM);
 
         eventMsgReceiver.processStreamEvent(streamAction);
-
     }
 
     @Override

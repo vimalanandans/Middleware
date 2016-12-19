@@ -34,19 +34,12 @@ import java.io.File;
  */
 public class StreamRecord {
 
-    //stream primary ID
     private Short streamId;
-    // changed after receiving the Response, this will be in ALIVE status in the stream store.
     private StreamRecordStatus streamRecordStatus = StreamRecordStatus.ALIVE;
-    //The receipient zirk end point
-    private BezirkZirkEndPoint recipientSEP;
-    //The receipient zirk end point
-    private BezirkZirkEndPoint senderSEP;
-    //File file information which will be sent
+    private BezirkZirkEndPoint recipientServiceEndPoint;
+    private BezirkZirkEndPoint senderServiceEndPoint;
     private File file;
-    // recipient Port,set after getting the Stream Response
     private Integer recipientPort;
-    // recipient Port,set after getting the Stream Response
     private String recipientIp;
     private ZirkId zirkId;
 
@@ -56,17 +49,17 @@ public class StreamRecord {
 
     public StreamRecord(Short streamId, BezirkZirkEndPoint recipientEndPoint, File file, BezirkZirkEndPoint senderEndPoint){
         this.streamId = streamId;
-        this.recipientSEP = recipientEndPoint;
+        this.recipientServiceEndPoint = recipientEndPoint;
         this.file = file;
-        this.senderSEP = senderEndPoint;
+        this.senderServiceEndPoint = senderEndPoint;
     }
 
     public Short getStreamId() {
         return streamId;
     }
 
-    BezirkZirkEndPoint getRecipientSEP() {
-        return recipientSEP;
+    BezirkZirkEndPoint getRecipientServiceEndPoint() {
+        return recipientServiceEndPoint;
     }
 
     public File getFile() {
@@ -74,7 +67,7 @@ public class StreamRecord {
     }
 
     /**
-     * default will be PENDING, but can be updated based on the staus to
+     * default will be ALIVE, but can be updated based on the staus to
      * @param streamRecordStatus status of StreamRecord
      */
     public void setStreamRecordStatus(StreamRecordStatus streamRecordStatus) {
@@ -109,17 +102,17 @@ public class StreamRecord {
         return zirkId;
     }
 
-    public BezirkZirkEndPoint getSenderSEP() {
-        return senderSEP;
+    public BezirkZirkEndPoint getSenderServiceEndPoint() {
+        return senderServiceEndPoint;
     }
 
     /* Streaming Status indicates the status of the Streams.
-                 * ALIVE -  Status for sender, when we has initiated a request.
-                 * ADDRESSED   -  indicating the recipient has received the request.
-                 * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
-                 * BUSY -  indicating the receipient is busy, All the active ports are consumed.
-                 * COMPLETED -  Indicates that file transfer was complete.
-                 * */
+     * ALIVE -  Status for sender, when we has initiated a request.
+     * ADDRESSED   -  indicating the recipient has received the request.
+     * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
+     * BUSY -  indicating the receipient is busy, All the active ports are consumed.
+     * COMPLETED -  Indicates that file transfer was complete.
+     */
     public enum StreamRecordStatus {
         ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED, ERROR
 
