@@ -12,5 +12,5 @@
     </root>
 
     <!-- Configure package level logging-->
-    <!--<logger name="package.to.configure" level="TRACE" />-->
+    <logger name="com.bezirk.middleware.core.comms" level="TRACE" />
 </configuration>
