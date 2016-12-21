@@ -30,6 +30,7 @@ import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,27 +45,20 @@ import java.util.concurrent.Executors;
 
 /**
  * StreamAliveObserver is a implementation of <code>StreamEventObserver</code>.
- * Update will be called when the subject StreamBook will be updated with a new entry.
+ * #update will be called when the subject StreamBook will be updated with a new entry.
  */
 
 class StreamAliveObserver implements Observer {
 
-    //executor which handles the file stream receiving thread.
-    private ExecutorService fileStreamReceiverExecutor;
-    //size of thread size
     private static final int THREAD_SIZE = 10;
-    //comms injected.
-    private Comms comms = null;
+    private static final Logger logger = LoggerFactory.getLogger(StreamAliveObserver.class);
+
+    private final ExecutorService fileStreamReceiverExecutor;
+    private final Comms comms;
     private final Gson gson = new Gson();
-    //streamBook and Portfactory also needs to be dependency injected.
-    private StreamBook streamBook;
-    private FileStreamPortFactory portFactory;
-    private ZirkMessageHandler zirkMessageHandler;
-
-    //logger instance
-    private static final Logger logger = LoggerFactory
-            .getLogger(StreamAliveObserver.class);
-
+    private final StreamBook streamBook;
+    private final FileStreamPortFactory portFactory;
+    private final ZirkMessageHandler zirkMessageHandler;
 
     StreamAliveObserver(Comms comms, StreamBook streamBook, FileStreamPortFactory portFactory, ZirkMessageHandler zirkMessageHandler){
         this.comms = comms;
@@ -76,18 +70,15 @@ class StreamAliveObserver implements Observer {
 
     @Override
     public void update(Observable observable, Object streamRequest) {
-        FileStreamRequest fileStreamRequest = (FileStreamRequest)streamRequest;
-        StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
+        final FileStreamRequest fileStreamRequest = (FileStreamRequest)streamRequest;
+        final StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
 
         if(StreamRecord.StreamRecordStatus.ALIVE == streamRecord.getStreamRecordStatus()){
-            //when the status is alive
             streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ADDRESSED);
-
-            //add the stream record to stream book.
             streamBook.addStreamingRecordToBook(streamRecord);
 
             //assign a port to stream record from the port factory.
-            Integer assignedPort = portFactory.getActivePort(streamRecord.getStreamId());
+            final Integer assignedPort = portFactory.getActivePort(streamRecord.getStreamId());
             logger.debug("assigned port {} for stream request of file {}",assignedPort, streamRecord.getFile().getName());
 
             if(assignedPort != -1){
@@ -95,45 +86,35 @@ class StreamAliveObserver implements Observer {
                 streamRecord.setRecipientIp(getIPAddress());
 
                 //start the receiver thread and send a reply to sender.
-                FileStreamReceivingThread streamReceivingThread =new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
+                final FileStreamReceivingThread streamReceivingThread =new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
                 fileStreamReceiverExecutor.execute(streamReceivingThread);
 
                 streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ASSIGNED);
-
-                //update stream book.
                 streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort, getIPAddress());
-                //reply to the sender with status
                 replyToSender(streamRecord);
 
             }else{
-                //update the stream record to busy status and send it to .
+                //update the stream record to BUSY status and send it to Sender.
                 streamRecord.setRecipientPort(assignedPort);
                 streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, null, null);
-
-                //reply to the sender with status
                 replyToSender(streamRecord);
             }
 
-            //give a callback status to zirk of updated status.
             zirkMessageHandler.callBackToZirk(streamRecord);
         }
 
     }
 
 
-
     /**
-     * reply to sender with the given stream staus.
+     * After updating the #StreamBook, Send a control message to sender with updated #StreamRecord status.
      * @param streamRecord streamRecord.
      */
-    private void replyToSender(StreamRecord streamRecord) {
-        //send a ControlMessage(StreamResponse) back to sender with updated information
-        ControlLedger controlLedger = new ControlLedger();
-
-        //sphere will be DEFAULT as of now
+    private void replyToSender(@NotNull StreamRecord streamRecord) {
+        final ControlLedger controlLedger = new ControlLedger();
         controlLedger.setSphereId("DEFAULT");
 
-        FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderServiceEndPoint(), "DEFAULT", streamRecord);
+        final FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderServiceEndPoint(), "DEFAULT", streamRecord);
         controlLedger.setMessage(streamResponse);
         controlLedger.setSerializedMessage(gson.toJson(streamResponse));
 
@@ -143,21 +124,24 @@ class StreamAliveObserver implements Observer {
 
 
     /**
-     * Get IP address from first non-localhost interface, This has to be removed!!!!!!!!!!!!!!
+     * Get IP address from first non-localhost interface.
      * @return  address or empty string
      */
     private static String getIPAddress() {
         try {
-            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+            final List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
-                String sAddr = getNetworkAddress(intf);
+                final String sAddr = getNetworkAddress(intf);
                 if (sAddr != null){
                     return sAddr;
+                }else{
+                    logger.error("Error while getting IP address of device!");
                 }
             }
         } catch (Exception ex) {
             logger.error("Error while getting IP address of device", ex);
-        } // for now eat exceptions
+            throw new UnsupportedOperationException("Could not get the IP address of the device!.");
+        }
         return "";
     }
 
@@ -167,13 +151,15 @@ class StreamAliveObserver implements Observer {
      * @return IP address of the device.
      */
     private static String getNetworkAddress(NetworkInterface intf) {
-        List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+        final List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
         for (InetAddress addr : addrs) {
             if (!addr.isLoopbackAddress()) {
-                String sAddr = addr.getHostAddress();
+                final String sAddr = addr.getHostAddress();
                 boolean isIPv4 = sAddr.indexOf(':')<0;
                 if (isIPv4){
                     return sAddr;
+                }else{
+                    logger.error("could not return a network address from NetworkInterface");
                 }
             }
         }

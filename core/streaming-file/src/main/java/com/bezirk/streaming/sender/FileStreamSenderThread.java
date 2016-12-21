@@ -44,14 +44,13 @@ import java.util.concurrent.Callable;
  */
 
 public class FileStreamSenderThread implements Callable<Boolean> {
+    private static final Logger logger = LoggerFactory.getLogger(FileStreamSenderThread.class);
+    private static final int BUFFER_SIZE = 1024;
 
     private Socket client;
-    private static final Logger logger = LoggerFactory
-            .getLogger(FileStreamSenderThread.class);
-    private static final int BUFFER_SIZE = 1024; // size of the buffer
     private final File file;
-    private final String recipientIP; // recipient
-    private final int port; // the port that the recipient is listening
+    private final String recipientIP;
+    private final int port;
 
 
     public FileStreamSenderThread(StreamRecord streamRecord){
@@ -62,21 +61,20 @@ public class FileStreamSenderThread implements Callable<Boolean> {
 
     @Override
     public Boolean call() {
-
         Boolean streamStatus = Boolean.FALSE;
         client = null;
         FileInputStream fileInputStream = null;
         DataOutputStream dataOutputStream = null;
         try {
             logger.debug("Thread started to send the data for file {}", file.getName());
-            fileInputStream = new FileInputStream(file);  // open the file
-            client = new Socket(recipientIP, port);       // open the socket
+            fileInputStream = new FileInputStream(file);
+            client = new Socket(recipientIP, port);
             dataOutputStream = new DataOutputStream(client.getOutputStream());
 
             int noOfBytesReadFromTheFile;
             final byte[] buffer = new byte[BUFFER_SIZE];
             while ((noOfBytesReadFromTheFile = fileInputStream.read(buffer)) != -1) {
-                dataOutputStream.write(buffer, 0, noOfBytesReadFromTheFile);   // write into the buffer
+                dataOutputStream.write(buffer, 0, noOfBytesReadFromTheFile);
             }
             logger.debug("---------- Data has been transferred successfully! -------------");
             streamStatus = Boolean.TRUE;

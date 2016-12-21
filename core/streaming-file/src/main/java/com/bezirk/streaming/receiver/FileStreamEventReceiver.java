@@ -42,13 +42,14 @@ import static com.bezirk.middleware.core.control.messages.ControlMessage.Discrim
 public class FileStreamEventReceiver implements CtrlMsgReceiver {
 
     private final FileStreamRequestObserver fileStreamRequestObserver;
+    private static final Logger logger = LoggerFactory.getLogger(FileStreamEventReceiver.class);
+    private final Comms comms;
+    private final EventMsgReceiver eventMsgReceiver;
 
-    //logger instance
-    private static final Logger logger = LoggerFactory
-            .getLogger(FileStreamEventReceiver.class);
-
-    public FileStreamEventReceiver() {
-        fileStreamRequestObserver = new FileStreamRequestObserver();
+    public FileStreamEventReceiver(Comms comms, EventMsgReceiver eventMsgReceiver) {
+        this.comms = comms;
+        this.eventMsgReceiver = eventMsgReceiver;
+        fileStreamRequestObserver = new FileStreamRequestObserver(comms, eventMsgReceiver);
     }
 
     /**
@@ -61,7 +62,7 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
         if(id.equals(STREAM_REQUEST)){
             if(serializedMsg != null){
-                FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
+                final FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
                 fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
             }
         }else{
@@ -71,11 +72,4 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
         return true;
     }
 
-    /**
-     * pass the comms object to StreamAliveObserver as it is required to send reply
-     * @param comms instance of COMMS
-     */
-    public void initFileStreamEventObserver(Comms comms, EventMsgReceiver msgReceiver){
-        fileStreamRequestObserver.initStreamRequestObserver(comms, msgReceiver);
-    }
 }

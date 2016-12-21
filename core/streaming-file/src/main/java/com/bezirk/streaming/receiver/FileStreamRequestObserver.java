@@ -22,6 +22,12 @@
  */
 package com.bezirk.streaming.receiver;
 
+import java.util.Observable;
+
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bezirk.middleware.core.actions.BezirkAction;
 import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.comms.Comms;
@@ -33,11 +39,6 @@ import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
 import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Observable;
-
 /**
  * Implementaion of {@link StreamReceiver} and {@link ZirkMessageHandler}
  * all the Stream receiving events will be received here and passed to observers, There are 2 observers as now,
@@ -45,30 +46,24 @@ import java.util.Observable;
  */
 
 class FileStreamRequestObserver extends Observable implements StreamReceiver, ZirkMessageHandler{
-    private static final Logger logger = LoggerFactory
-            .getLogger(FileStreamRequestObserver.class);
+    private static final Logger logger = LoggerFactory.getLogger(FileStreamRequestObserver.class);
+    private final EventMsgReceiver eventMsgReceiver;
 
-    private EventMsgReceiver eventMsgReceiver = null;
+    FileStreamRequestObserver(@NotNull Comms comms, @NotNull EventMsgReceiver eventMsgReceiver){
+        this.eventMsgReceiver = eventMsgReceiver;
+        final StreamBook streamBook = new StreamBook();
+        final FileStreamPortFactory portFactory = new FileStreamPortFactory();
 
-    void initStreamRequestObserver(Comms comms, EventMsgReceiver eventMsgReceiver){
-        if(comms != null || eventMsgReceiver != null){
-            this.eventMsgReceiver = eventMsgReceiver;
-            StreamBook streamBook = new StreamBook();
-            FileStreamPortFactory portFactory = new FileStreamPortFactory();
+        //initialize the observers
+        addObserver(new StreamAliveObserver(comms, streamBook, portFactory, this));
+        addObserver(new StreamAssignedObserver(comms, streamBook, this));
 
-            //initialize the observers
-            addObserver(new StreamAliveObserver(comms, streamBook, portFactory, this));
-            addObserver(new StreamAssignedObserver(comms, streamBook, this));
-
-            logger.info("Initialized the Streaming observers");
-        }else{
-            logger.error("Stream request observer initialization was unsuccessful");
-        }
+        logger.trace("Initialized the Streaming observers");
     }
 
     @Override
     public void callBackToZirk(StreamRecord streamRecord){
-        StreamAction streamAction  = new StreamAction(streamRecord.getZirkId());
+        final StreamAction streamAction  = new StreamAction(streamRecord.getZirkId());
         streamAction.setStreamId(streamRecord.getStreamId());
         streamAction.setStreamStatus(streamRecord.getStreamRecordStatus().toString());
         streamAction.setBezirkAction(BezirkAction.ACTION_ZIRK_RECEIVE_STREAM);
@@ -78,11 +73,20 @@ class FileStreamRequestObserver extends Observable implements StreamReceiver, Zi
 
     @Override
     public void incomingStreamRequest(StreamRequest streamRequest) {
-        //when we receive the event.. notify subjects observers.
-        FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
-        logger.debug("received a new stream request for file {}", fileStreamRequest.getStreamRecord().getFile().getName());
-        setChanged();
-        notifyObservers(fileStreamRequest);
+        if(streamRequest != null){
+            final FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
+            if(fileStreamRequest.getStreamRecord()!=null && fileStreamRequest.getStreamRecord().getFile()!=null) {
+                logger.debug("received a new stream request for file {}", fileStreamRequest.getStreamRecord().getFile().getName());
+                setChanged();
+                notifyObservers(fileStreamRequest);
+            }else{
+                logger.error("File Stream Request has insufficient data to be processed by Observers!");
+            }
+
+        }else{
+            logger.error("Incomming Stream Request was null!");
+        }
+
     }
 
 }

@@ -39,31 +39,24 @@ import java.net.SocketException;
 
 /**
  * FileStreamReceivingThread, will be a running thread
- *
- * Created by PIK6KOR on 11/15/2016.
  */
 
 class FileStreamReceivingThread implements Runnable{
 
-    //assigned port for file streaming
-    private Integer assignedPort = -1;
-    //connection timeout
     private static final int CONNECTION_TIMEOUT_TIME = 45000;
     private static final String FILE_DOWNLOAD_FOLDER = "/storage/emulated/0/bezirk/downloads/";
-    private File file = null;
-    //file stream buffer size.
     private static final int BUFFER_SIZE = 1024;
-    // Note this has to be injected.
-    private FileStreamPortFactory portFactory = null;
-    //logger instance
     private static final Logger logger = LoggerFactory.getLogger(FileStreamReceivingThread.class);
+
+    private Integer assignedPort = -1;
+    private final File file;
+    private final FileStreamPortFactory portFactory;
 
     FileStreamReceivingThread(Integer port, File file, FileStreamPortFactory portFactory){
         this.assignedPort = port;
         this.file = file;
         this.portFactory = portFactory;
     }
-
 
     @Override
     public void run() {
@@ -76,7 +69,7 @@ class FileStreamReceivingThread implements Runnable{
         boolean streamErrored = true;
 
         try {
-            socket = new ServerSocket(assignedPort); // listen at the Port
+            socket = new ServerSocket(assignedPort);
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
@@ -87,20 +80,16 @@ class FileStreamReceivingThread implements Runnable{
 
                 int noOfBytesRead;
                 final byte[] buffer = new byte[BUFFER_SIZE];
-                logger.debug("Strted file receiving thread for file {}", file.getName());
+                logger.debug("Started file receiving thread for file {}", file.getName());
                 while ((noOfBytesRead = inputStream.read(buffer)) != -1) {
                     fileOutputStream.write(buffer, 0, noOfBytesRead);
                 }
 
-                //release the port.
                 portFactory.releasePort(assignedPort);
-
                 streamErrored = false;
             }else{
-                logger.error("Failed to create folder!!!");
+                logger.error("Failed to create folder!");
             }
-
-
         } catch (SocketException e) {
             logger.error("Connection Timeout, the client didn't connect within specified timeout", e);
         } catch (FileNotFoundException e) {
@@ -138,10 +127,10 @@ class FileStreamReceivingThread implements Runnable{
                 fileOutputStream.flush();
                 fileOutputStream.close();
             }
-            if (ValidatorUtility.isObjectNotNull(receivingSocket)) { // If SocketTimeout Exception occurs, receivingSocket==null
+            if (ValidatorUtility.isObjectNotNull(receivingSocket)) {
                 receivingSocket.close();
             }
-            if (ValidatorUtility.isObjectNotNull(socket)) { // If SocketTimeout Exception occurs, socket==null
+            if (ValidatorUtility.isObjectNotNull(socket)) {
                 socket.close();
             }
         } catch (IOException e) {

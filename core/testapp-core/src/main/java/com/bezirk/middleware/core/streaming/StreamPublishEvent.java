@@ -28,16 +28,17 @@ import java.util.Random;
 
 
 /**
+ * Event subscribed by the Stream Publisher. To identify the recipient uniquely,
+ * we generate a random number.
  *
- * @author pik6kor
+ * An instance of this class is created by the Receiver <code>StreamReceiverActivity</code>, and replied to the Sender<code>StreamingActivity</code>.
  */
 public class StreamPublishEvent extends Event {
 
-    //set the subscriberID
-    private String subscriberId;
+    private final String subscriberId;
 
     public StreamPublishEvent(String subscriberId){
-        Random rand = new Random();
+        final Random rand = new Random();
         this.subscriberId = subscriberId + "-" + (rand.nextInt(50) + 1);
     }
 

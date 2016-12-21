@@ -25,8 +25,7 @@ package com.bezirk.middleware.core.streaming;
 import com.bezirk.middleware.messages.EventSet;
 
 /**
- *
- * @author pik6kor
+ * Event set which has list of events which has to be subscribed by the Stream Receiver
  */
 
 public class StreamReceiverEventSet extends EventSet {

@@ -25,8 +25,7 @@ package com.bezirk.middleware.core.streaming;
 import com.bezirk.middleware.messages.Event;
 
 /**
- *
- * @author pik6kor
+ * Event subscribed by the Stream Receiver, Helps to discover the recipient.
  */
 
 public class StreamReceiveEvent extends Event {
