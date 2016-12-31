@@ -85,7 +85,6 @@ class FileStreamReceivingThread implements Runnable{
                     fileOutputStream.write(buffer, 0, noOfBytesRead);
                 }
 
-                portFactory.releasePort(assignedPort);
                 streamErrored = false;
             }else{
                 logger.error("Failed to create folder!");
@@ -97,10 +96,8 @@ class FileStreamReceivingThread implements Runnable{
         } catch (IOException e) {
             logger.error("Exception occurred while receiving stream.", e);
         } finally {
+            portFactory.releasePort(assignedPort);
             if (streamErrored) {
-                //releasing the port from active and making it available.
-                portFactory.releasePort(assignedPort);
-            }else{
                 if (tempFile.exists() && !tempFile.delete()) {
                     logger.error("Failed to delete temporary stream file: {}", tempFile);
                 }
@@ -113,7 +110,7 @@ class FileStreamReceivingThread implements Runnable{
      * close the streaming resources.
      * @param socket open socket
      * @param receivingSocket receiving socket
-     * @param fileOutputStream open stream which is open
+     * @param fileOutputStream stream of bytes which will be written to the file being saved.
      * @param inputStream input stream which was opened
      */
     private void closeResources(ServerSocket socket, Socket receivingSocket,
@@ -144,20 +141,17 @@ class FileStreamReceivingThread implements Runnable{
      * @return downloadFolder Path of the download folder.
      */
     private String getDownloadPath(String downloadFolder){
-        final File createDownloadFolder = new File(
-                downloadFolder);
+        final File createDownloadFolder = new File(downloadFolder);
         if (!createDownloadFolder.exists()) {
-            logger.error("Download folder does not exist {}",
-                    createDownloadFolder.getAbsolutePath());
-        }else{
-            if (!createDownloadFolder.mkdir()) {
+            if (createDownloadFolder.mkdir()) {
+                logger.debug("create download folder: {}", createDownloadFolder.getAbsolutePath());
+            }else{
                 logger.error("Failed to create download direction: {}",
                         createDownloadFolder.getAbsolutePath());
                 return null;
-            }else{
-                logger.debug("create download folder: {}",
-                        createDownloadFolder.getAbsolutePath());
             }
+        }else{
+            logger.error("Download folder does not exist {}", createDownloadFolder.getAbsolutePath());
         }
         return downloadFolder;
     }

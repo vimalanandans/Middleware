@@ -60,7 +60,7 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
      */
     @Override
     public boolean processControlMessage(ControlMessage.Discriminator id, String serializedMsg) {
-        if(id.equals(STREAM_REQUEST)){
+        if(STREAM_REQUEST.equals(id)){
             if(serializedMsg != null){
                 final FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
                 fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);

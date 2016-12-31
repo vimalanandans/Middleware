@@ -33,16 +33,16 @@ import java.util.Set;
 
 /**
  *  Port factory will handle the ports in given range. Here we can retreive active port
- *  release the unused port, These ports map will have portKey {@link com.bezirk.streaming.StreamRecord#streamId}
- *  and port as value.
+ *  release the unused port, These ports map will have portKey
+ *  {@link com.bezirk.streaming.StreamRecord#streamId} and port as value.
  */
 
 public class FileStreamPortFactory{
 
-    private final int startingPort;
-    private final Set<Integer> activePorts;
-    private final int streamMax;
-    private int lastAssignedPort;
+    private static final int startingPort = 6321;
+    private static final Set<Integer> activePorts = new HashSet<>();
+    private static final int MAX_STREAM_COUNT = 10;
+    private static int lastAssignedPort = startingPort;
 
     //holds the value for port number assigned for a stream id.
     private final Map<Short, Integer> portsMap = new HashMap<>();
@@ -50,11 +50,6 @@ public class FileStreamPortFactory{
 
     //default constructor
     public FileStreamPortFactory() {
-        Short streamStartPort = 6321;
-        startingPort = streamStartPort;
-        activePorts = new HashSet<>();
-        lastAssignedPort = streamStartPort;
-        this.streamMax = 10;
     }
 
 
@@ -63,11 +58,11 @@ public class FileStreamPortFactory{
      * @param portMapKey portmap key
      * @return a free active port, available for open connection.
      */
-    public Integer getActivePort(Short portMapKey) {
+    public Integer getAvailablePort(Short portMapKey) {
         synchronized (this) {
             int nextPort;
 
-            if (activePorts.size() == streamMax) {
+            if (activePorts.size() == MAX_STREAM_COUNT) {
                 logger.error("all ports are consumed for streaming");
                 return -1;
             }
@@ -87,7 +82,7 @@ public class FileStreamPortFactory{
 
                 }
             } while (true);
-            logger.info("assigned port for streaming {}", nextPort);
+            logger.debug("assigned port {} for streaming id {}", nextPort, portMapKey);
             return nextPort;
         }
     }
@@ -95,14 +90,14 @@ public class FileStreamPortFactory{
     /**
      * update the portMap when the port is released or when free.
      * @param portMapKey portmap key is the port key
-     * @param value port calue
+     * @param value port value
      * @return boolean value based on the update feature
      */
     private boolean updatePortsMap(Short portMapKey, int value) {
 
         synchronized (this) {
 
-            if (value <= 0) {
+            if (portMapKey <=0 || value <= 0) {
                 logger.error("empty values for either key or value");
                 return false;
             }
@@ -112,7 +107,8 @@ public class FileStreamPortFactory{
                 return false;
             }
             getPortsMap().put(portMapKey, value);
-            logger.debug("portsmap updated with key : value: key: {}  value: {}",portMapKey, value);
+            logger.debug("portmap was updated with key : value: key: {}  value: {}",
+                    portMapKey, value);
             return true;
 
         }
@@ -138,25 +134,24 @@ public class FileStreamPortFactory{
             boolean updatedPortMap = true;
 
             if (port <= 0) {
-                logger.debug("error in releasing port from portfactory {}", port);
+                logger.debug("Cannot release invalid port number {}", port);
                 return false;
             }
 
             if (getPortsMap().containsValue(port)) {
 
-                Iterator<Map.Entry<Short, Integer>> portsMapIterator = getPortsMap()
-                        .entrySet().iterator();
+                final Iterator<Integer> portsMapIterator = getPortsMap().values().iterator();
                 while (portsMapIterator.hasNext()) {
-                    Map.Entry<Short, Integer> entry = portsMapIterator.next();
-                    if (entry.getValue() == port) {
+                    final Integer portValueEntry = portsMapIterator.next();
+                    if (portValueEntry == port) {
                         portsMapIterator.remove();
                         break;
                     }
                 }
-                logger.debug("releasing port from port factory {}", port);
+                logger.debug("releasing port {} in port factory", port);
             } else {
                 updatedPortMap = false;
-                logger.debug("port map was not updated from port factory {} for ", port);
+                logger.debug("port map was not updated in port factory for port {}", port);
             }
 
             return updatedPortMap;

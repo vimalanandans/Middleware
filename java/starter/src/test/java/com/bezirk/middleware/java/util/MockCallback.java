@@ -39,6 +39,6 @@ public class MockCallback implements MessageHandler {
 
     @Override
     public void onIncomingStreamEvent(StreamAction streamMessage) {
-        
+        throw new UnsupportedOperationException("This feature is still incomplete.");
     }
 }

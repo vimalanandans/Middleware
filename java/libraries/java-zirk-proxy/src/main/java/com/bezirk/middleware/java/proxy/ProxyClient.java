@@ -204,6 +204,6 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public StreamController sendStream(Stream streamRequest) {
-        return null;
+        throw new UnsupportedOperationException("feature to be implemented.");
     }
 }

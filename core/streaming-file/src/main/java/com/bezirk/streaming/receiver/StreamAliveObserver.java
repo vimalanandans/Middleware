@@ -78,7 +78,7 @@ class StreamAliveObserver implements Observer {
             streamBook.addStreamingRecordToBook(streamRecord);
 
             //assign a port to stream record from the port factory.
-            final Integer assignedPort = portFactory.getActivePort(streamRecord.getStreamId());
+            final Integer assignedPort = portFactory.getAvailablePort(streamRecord.getStreamId());
             logger.debug("assigned port {} for stream request of file {}",assignedPort, streamRecord.getFile().getName());
 
             if(assignedPort != -1){
