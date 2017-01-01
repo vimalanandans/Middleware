@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StreamBook {
 
     //Streaming Request queue.
-    private final Map<Short, StreamRecord> streamingQueue = new ConcurrentHashMap<>();
+    private final Map<Long, StreamRecord> streamingQueue = new ConcurrentHashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(StreamBook.class);
 
     /**
@@ -52,7 +52,7 @@ public class StreamBook {
     /**
      * update a streamRecord the streamBook
      */
-    public void updateStreamRecordInBook(Short streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port, String deviceIp){
+    public void updateStreamRecordInBook(Long streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port, String deviceIp){
         //get the stream based on the id and update the status
         final StreamRecord streamRecord = streamingQueue.get(streamKey);
         streamRecord.setStreamRecordStatus(updateStatus);
@@ -76,7 +76,7 @@ public class StreamBook {
      * @param streamId streamId of the StreamRecord
      * @return boolean
      */
-    public boolean hasStreamRecord(Short streamId) {
+    public boolean hasStreamRecord(Long streamId) {
         return streamingQueue.containsKey(streamId);
     }
 }

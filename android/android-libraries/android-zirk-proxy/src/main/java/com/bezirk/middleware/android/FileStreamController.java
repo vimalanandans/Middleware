@@ -11,10 +11,10 @@ import com.bezirk.middleware.streaming.StreamController;
 class FileStreamController extends StreamController {
 
     //primary key for streaming.
-    private final Short streamId;
+    private final Long streamId;
 
     //constructor
-    FileStreamController(Short streamId){
+    FileStreamController(Long streamId){
         this.streamId = streamId;
     }
 
@@ -28,7 +28,7 @@ class FileStreamController extends StreamController {
         */
     }
 
-    public Short getStreamId() {
+    public Long getStreamId() {
         return streamId;
     }
 

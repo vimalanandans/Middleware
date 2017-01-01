@@ -32,7 +32,7 @@ import com.bezirk.middleware.streaming.Stream;
 
 public class StreamAction extends ZirkAction {
 
-    private short streamId;
+    private Long streamId;
     private BezirkAction bezirkAction;
     private Stream stream;
     private String streamStatus;
@@ -41,7 +41,7 @@ public class StreamAction extends ZirkAction {
         super(zirkId);
     }
 
-    public StreamAction(ZirkId zirkId, short streamId, Stream stream, BezirkAction bezirkAction){
+    public StreamAction(ZirkId zirkId, Long streamId, Stream stream, BezirkAction bezirkAction){
         super(zirkId);
         this.stream  = stream;
         this.streamId = streamId;
@@ -65,11 +65,11 @@ public class StreamAction extends ZirkAction {
         this.stream = stream;
     }
 
-    public short getStreamId() {
+    public Long getStreamId() {
         return streamId;
     }
 
-    public void setStreamId(short streamId) {
+    public void setStreamId(Long streamId) {
         this.streamId = streamId;
     }
 

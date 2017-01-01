@@ -34,7 +34,7 @@ import java.io.File;
  */
 public class StreamRecord {
 
-    private Short streamId;
+    private Long streamId;
     private StreamRecordStatus streamRecordStatus = StreamRecordStatus.ALIVE;
     private BezirkZirkEndPoint recipientServiceEndPoint;
     private BezirkZirkEndPoint senderServiceEndPoint;
@@ -43,18 +43,14 @@ public class StreamRecord {
     private String recipientIp;
     private ZirkId zirkId;
 
-    public StreamRecord(){
-        //default contsructor
-    }
-
-    public StreamRecord(Short streamId, BezirkZirkEndPoint recipientEndPoint, File file, BezirkZirkEndPoint senderEndPoint){
+    public StreamRecord(Long streamId, BezirkZirkEndPoint recipientEndPoint, File file, BezirkZirkEndPoint senderEndPoint){
         this.streamId = streamId;
         this.recipientServiceEndPoint = recipientEndPoint;
         this.file = file;
         this.senderServiceEndPoint = senderEndPoint;
     }
 
-    public Short getStreamId() {
+    public Long getStreamId() {
         return streamId;
     }
 

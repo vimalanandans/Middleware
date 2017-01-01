@@ -119,7 +119,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
      * @param incomingStreamEvent incoming stream event
      */
     private void processStream(StreamAction incomingStreamEvent){
-        final Short streamID = incomingStreamEvent.getStreamId();
+        final Long streamID = incomingStreamEvent.getStreamId();
 
         if (ProxyClient.streamSetMap.containsKey(streamID)) {
             final Stream.StreamEventReceiver receiver = ProxyClient.streamSetMap.get(streamID);

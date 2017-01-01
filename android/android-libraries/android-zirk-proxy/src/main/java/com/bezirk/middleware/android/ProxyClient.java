@@ -58,7 +58,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
-    static final Map<Short, Stream.StreamEventReceiver> streamSetMap = new ConcurrentHashMap<>();
+    static final Map<Long, Stream.StreamEventReceiver> streamSetMap = new ConcurrentHashMap<>();
     /**
      * Stores the list of <code>EventSet</code>(s) associated with each zirk.
      * [Key -&gt; Value] = [ZirkId -&gt; [List of EventSets]]
@@ -72,9 +72,6 @@ public class ProxyClient implements Bezirk {
     protected static Context context;
     private static ProxyServer proxyServer;
     private final ZirkId zirkId;
-
-    //Stream Primary id
-    private short streamIdCounter;
 
     public ProxyClient(ZirkId zirkId) {
         this.zirkId = zirkId;
@@ -217,8 +214,7 @@ public class ProxyClient implements Bezirk {
     @Override
     public StreamController sendStream(Stream streamRequest){
         //generate a unique streamID, this will be the primary key for stream access.
-        final Integer intStreamID = (streamIdCounter++) % Short.MAX_VALUE;
-        final Short streamID = intStreamID.shortValue();
+        final Long streamID = System.currentTimeMillis();
         StreamController fileStreamController = null;
         if(!streamSetMap.containsKey(streamID)){
             fileStreamController = new FileStreamController(streamID);

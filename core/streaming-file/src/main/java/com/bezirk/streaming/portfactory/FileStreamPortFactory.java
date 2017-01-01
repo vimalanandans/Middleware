@@ -39,40 +39,35 @@ import java.util.Set;
 
 public class FileStreamPortFactory{
 
-    private static final int startingPort = 6321;
-    private static final Set<Integer> activePorts = new HashSet<>();
+    private static final int STARTING_PORT = 6321;
+    private static final Set<Integer> ACTIVE_PORTS = new HashSet<>();
     private static final int MAX_STREAM_COUNT = 10;
-    private static int lastAssignedPort = startingPort;
+    private static int lastAssignedPort = STARTING_PORT;
 
     //holds the value for port number assigned for a stream id.
-    private final Map<Short, Integer> portsMap = new HashMap<>();
+    private final Map<Long, Integer> portsMap = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(FileStreamPortFactory.class);
-
-    //default constructor
-    public FileStreamPortFactory() {
-    }
-
 
     /**
      * retrieve a active port from the given port range
      * @param portMapKey portmap key
      * @return a free active port, available for open connection.
      */
-    public Integer getAvailablePort(Short portMapKey) {
+    public Integer getAvailablePort(Long portMapKey) {
         synchronized (this) {
             int nextPort;
 
-            if (activePorts.size() == MAX_STREAM_COUNT) {
+            if (ACTIVE_PORTS.size() == MAX_STREAM_COUNT) {
                 logger.error("all ports are consumed for streaming");
                 return -1;
             }
 
             do {
-                nextPort = startingPort + lastAssignedPort % startingPort;
-                if (activePorts.contains(nextPort)) {
+                nextPort = STARTING_PORT + lastAssignedPort % STARTING_PORT;
+                if (ACTIVE_PORTS.contains(nextPort)) {
                     lastAssignedPort++;
                 } else {
-                    activePorts.add(nextPort);
+                    ACTIVE_PORTS.add(nextPort);
                     if (updatePortsMap(portMapKey, nextPort)) {
                         lastAssignedPort = nextPort;
                         break;
@@ -93,7 +88,7 @@ public class FileStreamPortFactory{
      * @param value port value
      * @return boolean value based on the update feature
      */
-    private boolean updatePortsMap(Short portMapKey, int value) {
+    private boolean updatePortsMap(Long portMapKey, int value) {
 
         synchronized (this) {
 
@@ -118,7 +113,7 @@ public class FileStreamPortFactory{
      * returns the complete port map
      * @return complete port map
      */
-    private Map<Short, Integer> getPortsMap(){
+    private Map<Long, Integer> getPortsMap(){
         synchronized (this) {
             return portsMap;
         }
