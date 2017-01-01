@@ -79,10 +79,10 @@ class StreamAssignedObserver implements Observer {
                 }
                 if(future.get()){
                     streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.COMPLETED);
-                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, null, null);
+                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, -1, null);
                 }else{
                     streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ERROR);
-                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, null, null);
+                    streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, -1, null);
                 }
             } catch (InterruptedException e) {
                 logger.error("InterruptedException has occurred during File stream SENDING!", e);

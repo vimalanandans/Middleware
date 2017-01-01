@@ -52,12 +52,12 @@ public class StreamBook {
     /**
      * update a streamRecord the streamBook
      */
-    public void updateStreamRecordInBook(Long streamKey, StreamRecord.StreamRecordStatus updateStatus, Integer port, String deviceIp){
+    public void updateStreamRecordInBook(Long streamKey, StreamRecord.StreamRecordStatus updateStatus, int port, String deviceIp){
         //get the stream based on the id and update the status
         final StreamRecord streamRecord = streamingQueue.get(streamKey);
         streamRecord.setStreamRecordStatus(updateStatus);
 
-        if(port != null){
+        if(port > 0){
             streamRecord.setRecipientPort(port);
             logger.debug("updated stream record with Port {} to stream book", port);
         }

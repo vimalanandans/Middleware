@@ -53,7 +53,7 @@ public class FileStreamPortFactory{
      * @param portMapKey portmap key
      * @return a free active port, available for open connection.
      */
-    public Integer getAvailablePort(Long portMapKey) {
+    public int getAvailablePort(Long portMapKey) {
         synchronized (this) {
             int nextPort;
 
@@ -137,7 +137,7 @@ public class FileStreamPortFactory{
 
                 final Iterator<Integer> portsMapIterator = getPortsMap().values().iterator();
                 while (portsMapIterator.hasNext()) {
-                    final Integer portValueEntry = portsMapIterator.next();
+                    final int portValueEntry = portsMapIterator.next();
                     if (portValueEntry == port) {
                         portsMapIterator.remove();
                         break;
