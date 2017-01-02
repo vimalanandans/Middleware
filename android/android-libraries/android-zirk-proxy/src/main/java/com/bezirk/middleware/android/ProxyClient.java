@@ -233,15 +233,19 @@ public class ProxyClient implements Bezirk {
     }
 
     @Override
-    public StreamController sendStream(Stream streamRequest){
+    public StreamController sendStream(final Stream streamRequest){
         //generate a unique streamID, this will be the primary key for stream access.
         final Long streamID = System.currentTimeMillis();
         StreamController fileStreamController = null;
         if(!streamSetMap.containsKey(streamID)){
             fileStreamController = new FileStreamController(streamID);
-
             final BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
-            proxyServer.sendStream(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    proxyServer.sendStream(new StreamAction(zirkId, streamID,streamRequest, bezirkAction));
+                }
+            });
 
             //add the streamReciver to streamSetMap, used by the ZirkMessageReceiver to give callbacks.
             streamSetMap.put(streamID, streamRequest.getStreamEventReceiver());
