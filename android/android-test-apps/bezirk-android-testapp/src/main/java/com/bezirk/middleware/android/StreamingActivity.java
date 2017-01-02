@@ -54,6 +54,7 @@ public class StreamingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_streaming);
 
         bezirk = BezirkMiddleware.registerZirk(PUBLISHER_ID);
 
@@ -62,7 +63,6 @@ public class StreamingActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.discoveredlist);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setContentView(R.layout.activity_streaming);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
