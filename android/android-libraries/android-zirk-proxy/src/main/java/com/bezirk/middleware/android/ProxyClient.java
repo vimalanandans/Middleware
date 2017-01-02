@@ -24,6 +24,8 @@ package com.bezirk.middleware.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.preference.PreferenceManager;
 
 import com.bezirk.middleware.Bezirk;
@@ -73,12 +75,20 @@ public class ProxyClient implements Bezirk {
     private static ProxyServer proxyServer;
     private final ZirkId zirkId;
 
+    private static final String HANDLER_THREAD_NAME = ProxyClient.class.getSimpleName() + "Handler";
+    //For sending events to ProxyServer[primarily to prevent NetworkOnMainThread exception in android]
+    private static Handler handler;
+
+
     public ProxyClient(ZirkId zirkId) {
         this.zirkId = zirkId;
     }
 
-    protected static void registerProxyServer(@NotNull final ProxyServer proxyServer) {
+    protected static synchronized void registerProxyServer(@NotNull final ProxyServer proxyServer) {
         ProxyClient.proxyServer = proxyServer;
+        final HandlerThread handlerThread = new HandlerThread(HANDLER_THREAD_NAME);
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
     }
 
     public static ZirkId registerZirk(@NotNull final Context context, final String zirkName) {
@@ -140,7 +150,6 @@ public class ProxyClient implements Bezirk {
             throw new AssertionError("unknown messageSet type: " +
                     messageSet.getClass().getSimpleName());
         }
-
         proxyServer.subscribe(new SubscriptionAction(BezirkAction.ACTION_BEZIRK_SUBSCRIBE,
                 zirkId, messageSet));
     }
@@ -195,19 +204,31 @@ public class ProxyClient implements Bezirk {
     }
 
     @Override
-    public void sendEvent(RecipientSelector recipient, Event event) {
-        proxyServer.sendEvent(new SendMulticastEventAction(zirkId, recipient, event,
-                event instanceof IdentifiedEvent));
+    public void sendEvent(final RecipientSelector recipient, final Event event) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                proxyServer.sendEvent(new SendMulticastEventAction(zirkId, recipient, event,
+                        event instanceof IdentifiedEvent));
+            }
+        });
+
     }
 
     @Override
-    public void sendEvent(ZirkEndPoint recipient, Event event) {
-        proxyServer.sendEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
-                zirkId, recipient, event, event instanceof IdentifiedEvent));
+    public void sendEvent(final ZirkEndPoint recipient, final Event event) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                proxyServer.sendEvent(new UnicastEventAction(BezirkAction.ACTION_ZIRK_SEND_UNICAST_EVENT,
+                        zirkId, recipient, event, event instanceof IdentifiedEvent));
+            }
+        });
+
     }
 
     @Override
-    public void setLocation(Location location) {
+    public void setLocation(final Location location) {
         proxyServer.setLocation(new SetLocationAction(zirkId, location));
     }
 

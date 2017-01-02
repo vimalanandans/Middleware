@@ -31,9 +31,6 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        final Config.ConfigBuilder configBuilder = new Config.ConfigBuilder();
-        configBuilder.setLogLevel(Config.Level.TRACE);
-        BezirkMiddleware.initialize(this, configBuilder.create());
+        BezirkMiddleware.initialize(this);
     }
 }
