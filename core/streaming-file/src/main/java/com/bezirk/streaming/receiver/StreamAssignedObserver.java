@@ -73,10 +73,6 @@ class StreamAssignedObserver implements Observer {
             final FileStreamSenderThread fileStreamSenderThread = new FileStreamSenderThread(streamRecord);
             final Future<Boolean> future = fileStreamSenderExecutor.submit(fileStreamSenderThread);
             try {
-                while (!future.isDone()) {
-                    //sleep current thread for 100ms before checking if the future task was completed.
-                    Thread.sleep(100);
-                }
                 if(future.get()){
                     streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.COMPLETED);
                     streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, -1, null);
