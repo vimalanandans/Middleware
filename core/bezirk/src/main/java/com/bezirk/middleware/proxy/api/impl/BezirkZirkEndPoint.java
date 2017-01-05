@@ -27,6 +27,7 @@ import com.bezirk.middleware.addressing.ZirkEndPoint;
 import java.io.Serializable;
 
 public class BezirkZirkEndPoint implements ZirkEndPoint, Serializable {
+    private static final long serialVersionUID = -6062654768068335121L;
     private String device;
     private final ZirkId zirkId;
 
