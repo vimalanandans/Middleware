@@ -22,11 +22,11 @@
  */
 package com.bezirk.streaming;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * StreamBook will be a ledger for all the incoming and outgoing stream request.

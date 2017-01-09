@@ -61,6 +61,10 @@ public class StreamAction extends ZirkAction {
         return stream;
     }
 
+    public void setStream(Stream stream) {
+        this.stream = stream;
+    }
+
     public String getStreamId() {
         return streamId;
     }

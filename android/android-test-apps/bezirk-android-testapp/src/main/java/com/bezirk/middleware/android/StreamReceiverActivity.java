@@ -1,10 +1,5 @@
 package com.bezirk.middleware.android;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
-
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.android.testApp.R;
@@ -15,8 +10,12 @@ import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
 import com.bezirk.middleware.messages.StreamEvent;
 import com.bezirk.middleware.streaming.Stream;
-import com.bezirk.middleware.streaming.StreamReceiver;
 import com.jaredrummler.android.device.DeviceName;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 public class StreamReceiverActivity extends AppCompatActivity {
 
@@ -54,7 +53,7 @@ public class StreamReceiverActivity extends AppCompatActivity {
         Stream.StreamEventReceiver streamEventReceiver = new Stream.StreamEventReceiver() {
             @Override
             public void receiveStreamEvent(StreamEvent event) {
-                Toast.makeText(getApplicationContext(), "Status :: " + event.getStreamRecordStatus(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Status :: " + event.getStreamRecordStatus()+ "Fiel path is "+event.getFileName() , Toast.LENGTH_SHORT).show();
             }
         };
         bezirk.subscribeToStreamReceiver(streamEventReceiver);

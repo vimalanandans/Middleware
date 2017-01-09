@@ -34,6 +34,8 @@ import com.bezirk.middleware.core.comms.Comms;
 import com.bezirk.middleware.core.comms.processor.EventMsgReceiver;
 import com.bezirk.middleware.core.streaming.StreamReceiver;
 import com.bezirk.middleware.core.streaming.StreamRequest;
+import com.bezirk.middleware.streaming.FileStream;
+import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.streaming.FileStreamRequest;
 import com.bezirk.streaming.StreamBook;
 import com.bezirk.streaming.StreamRecord;
@@ -64,10 +66,11 @@ class FileStreamRequestObserver extends Observable implements StreamReceiver, Zi
     @Override
     public void callBackToZirk(StreamRecord streamRecord){
         final StreamAction streamAction  = new StreamAction(streamRecord.getZirkId());
+        final Stream fileStream = new FileStream(streamRecord.getSenderServiceEndPoint(), streamRecord.getFile());
         streamAction.setStreamId(streamRecord.getStreamId());
         streamAction.setStreamStatus(streamRecord.getStreamRecordStatus().toString());
         streamAction.setBezirkAction(BezirkAction.ACTION_ZIRK_RECEIVE_STREAM);
-
+        streamAction.setStream(fileStream);
         eventMsgReceiver.processStreamEvent(streamAction);
     }
 

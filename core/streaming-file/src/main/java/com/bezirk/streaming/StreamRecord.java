@@ -38,7 +38,7 @@ public class StreamRecord {
     private StreamRecordStatus streamRecordStatus = StreamRecordStatus.ALIVE;
     private BezirkZirkEndPoint recipientServiceEndPoint;
     private BezirkZirkEndPoint senderServiceEndPoint;
-    private final File file;
+    private File file;
     private int recipientPort;
     private String recipientIp;
     private ZirkId zirkId;
@@ -68,6 +68,10 @@ public class StreamRecord {
 
     public File getFile() {
         return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     /**

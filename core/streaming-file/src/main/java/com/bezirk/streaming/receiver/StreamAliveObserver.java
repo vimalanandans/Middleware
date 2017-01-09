@@ -22,6 +22,7 @@
  */
 package com.bezirk.streaming.receiver;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
@@ -81,24 +82,29 @@ class StreamAliveObserver extends FileStreamObserver{
                 streamRecord.setRecipientPort(assignedPort);
                 streamRecord.setRecipientIp(getIPAddress());
 
+                //start the receiver thread and send a reply to sender.
+                final FileStreamReceivingThread streamReceivingThread = new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
+                final Future<String> future = fileStreamReceiverExecutor.submit(streamReceivingThread);
+
                 streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ASSIGNED);
                 streamBook.updateRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort, getIPAddress());
                 replyToSender(streamRecord, comms);
                 logger.debug("replied to sender with Assigned status for file {} streaming", streamRecord.getFile().getName());
-
-                //start the receiver thread and send a reply to sender.
-                final FileStreamReceivingThread streamReceivingThread = new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
-                final Future<Boolean> future = fileStreamReceiverExecutor.submit(streamReceivingThread);
-
                 try{
                     //after file streaming is completed give a callback to receiver.
                     logger.debug("Waiting for file {} streaming to be completed!", streamRecord.getFile().getName());
-                    if(future.get()){
+                    final String downloadedFilePath = future.get();
+                    if(downloadedFilePath != null){
+                        final File file = new File(downloadedFilePath);
                         streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.COMPLETED);
-                        streamBook.updateRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, assignedPort, getIPAddress());
+                        streamRecord.setRecipientPort(assignedPort);
+                        streamRecord.setRecipientIp(getIPAddress());
+                        streamRecord.setFile(file);
+                        streamBook.addRecordinBook(streamRecord);
 
                         //setting it to null as key for streaming receiver key will be null.
                         streamRecord.setStreamId(null);
+
                     }
                 } catch (InterruptedException e) {
                     logger.error("InterruptedException has occurred during File stream RECEIVING!", e);

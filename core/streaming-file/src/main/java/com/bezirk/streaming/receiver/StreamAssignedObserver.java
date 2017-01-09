@@ -64,7 +64,9 @@ class StreamAssignedObserver extends FileStreamObserver{
         final FileStreamRequest fileStreamRequest = (FileStreamRequest) streamRequest;
         final StreamRecord streamRecord = fileStreamRequest.getStreamRecord();
 
-        if(StreamRecord.StreamRecordStatus.ASSIGNED == streamRecord.getStreamRecordStatus()){
+        if(StreamRecord.StreamRecordStatus.ASSIGNED == streamRecord.getStreamRecordStatus() && !streamBook.hasRecord(streamRecord.getStreamId())){
+            streamBook.addRecordinBook(streamRecord);
+
             //Start the sender thread and initiate file transmission.
             final FileStreamSenderThread fileStreamSenderThread = new FileStreamSenderThread(streamRecord);
             final Future<Boolean> future = fileStreamSenderExecutor.submit(fileStreamSenderThread);

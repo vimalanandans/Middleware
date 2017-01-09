@@ -22,12 +22,6 @@
  */
 package com.bezirk.streaming.receiver;
 
-import com.bezirk.middleware.core.util.ValidatorUtility;
-import com.bezirk.streaming.portfactory.FileStreamPortFactory;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +32,12 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.Callable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bezirk.middleware.core.util.ValidatorUtility;
+import com.bezirk.streaming.portfactory.FileStreamPortFactory;
+
 /**
  * This thread will be started by the File receiver bezirk instance. Once bezirk instance will
  * receive a {@link com.bezirk.streaming.StreamRecord} with
@@ -46,7 +46,7 @@ import java.util.concurrent.Callable;
  *
  */
 
-class FileStreamReceivingThread implements Callable<Boolean>{
+class FileStreamReceivingThread implements Callable<String>{
 
     private static final int CONNECTION_TIMEOUT_TIME = 45000;
     private static final String FILE_DOWNLOAD_FOLDER = "/storage/emulated/0/bezirk/downloads/";
@@ -64,13 +64,13 @@ class FileStreamReceivingThread implements Callable<Boolean>{
     }
 
     @Override
-    public Boolean call() {
+    public String call() {
         ServerSocket socket = null;
         Socket receivingSocket = null;
         File tempFile = null;
         FileOutputStream fileOutputStream = null;
         DataInputStream inputStream = null;
-
+        final String downloadedFile = FILE_DOWNLOAD_FOLDER + file.getName();
         boolean streamErrored = true;
 
         try {
@@ -79,7 +79,7 @@ class FileStreamReceivingThread implements Callable<Boolean>{
             receivingSocket = socket.accept();
 
             if(validateDownloadPath(FILE_DOWNLOAD_FOLDER)){
-                tempFile = new File(FILE_DOWNLOAD_FOLDER + file.getName());
+                tempFile = new File(downloadedFile);
                 fileOutputStream = new FileOutputStream(tempFile);
                 inputStream = new DataInputStream(receivingSocket.getInputStream());
 
@@ -104,14 +104,14 @@ class FileStreamReceivingThread implements Callable<Boolean>{
             portFactory.releasePort(assignedPort);
             closeResources(socket, receivingSocket, fileOutputStream, inputStream);
             if (streamErrored) {
-                if (tempFile.exists() && !tempFile.delete()) {
+                if (tempFile!= null && tempFile.exists() && !tempFile.delete()) {
                     logger.error("Failed to delete temporary stream file: {}", tempFile);
                 }
-                return Boolean.FALSE;
+                return null;
             }
 
         }
-        return Boolean.TRUE;
+        return downloadedFile;
     }
 
     /**

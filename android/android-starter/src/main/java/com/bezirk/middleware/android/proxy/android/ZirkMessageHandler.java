@@ -22,15 +22,15 @@
  */
 package com.bezirk.middleware.android.proxy.android;
 
-import android.content.Context;
-import android.content.Intent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bezirk.middleware.core.actions.StreamAction;
 import com.bezirk.middleware.core.actions.UnicastEventAction;
 import com.bezirk.middleware.core.proxy.MessageHandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import android.content.Context;
+import android.content.Intent;
 
 public class ZirkMessageHandler implements MessageHandler {
     private static final Logger logger = LoggerFactory.getLogger(ZirkMessageHandler.class);

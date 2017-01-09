@@ -125,7 +125,7 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
         if (ProxyClient.streamRequestMap.containsKey(streamID)) {
             final Stream.StreamEventReceiver receiver = ProxyClient.streamRequestMap.get(streamID);
             if(receiver != null){
-                final StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId(), fileStream.getFile().getName());
+                final StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId(), fileStream.getFile().getAbsolutePath());
                 receiver.receiveStreamEvent(streamEvent);
             }else{
                 logger.error("receiver object is null for stream request in stream map for Stream ID {}", streamID);
