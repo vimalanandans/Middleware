@@ -36,8 +36,8 @@ public class StreamRecord {
 
     private String streamId;
     private StreamRecordStatus streamRecordStatus = StreamRecordStatus.ALIVE;
-    private final BezirkZirkEndPoint recipientServiceEndPoint;
-    private final BezirkZirkEndPoint senderServiceEndPoint;
+    private BezirkZirkEndPoint recipientServiceEndPoint;
+    private BezirkZirkEndPoint senderServiceEndPoint;
     private final File file;
     private int recipientPort;
     private String recipientIp;
@@ -54,8 +54,16 @@ public class StreamRecord {
         return streamId;
     }
 
-    BezirkZirkEndPoint getRecipientServiceEndPoint() {
+    public BezirkZirkEndPoint getRecipientServiceEndPoint() {
         return recipientServiceEndPoint;
+    }
+
+    public void setRecipientServiceEndPoint(BezirkZirkEndPoint recipientServiceEndPoint) {
+        this.recipientServiceEndPoint = recipientServiceEndPoint;
+    }
+
+    public void setSenderServiceEndPoint(BezirkZirkEndPoint senderServiceEndPoint) {
+        this.senderServiceEndPoint = senderServiceEndPoint;
     }
 
     public File getFile() {

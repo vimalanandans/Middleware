@@ -22,22 +22,19 @@
  */
 package com.bezirk.streaming.receiver;
 
-import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.core.control.messages.ControlLedger;
-import com.bezirk.streaming.FileStreamRequest;
-import com.bezirk.streaming.StreamBook;
-import com.bezirk.streaming.StreamRecord;
-import com.bezirk.streaming.sender.FileStreamSenderThread;
-import com.google.gson.Gson;
+import java.util.Observable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Observable;
-import java.util.Observer;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import com.bezirk.middleware.core.comms.Comms;
+import com.bezirk.streaming.FileStreamRequest;
+import com.bezirk.streaming.StreamBook;
+import com.bezirk.streaming.StreamRecord;
+import com.bezirk.streaming.sender.FileStreamSenderThread;
 
 /**
  * StreamAssignedObserver is an Observer waiting for Assigned status stream records from {@link FileStreamRequestObserver}.
@@ -45,14 +42,13 @@ import java.util.concurrent.Future;
  *
  */
 
-class StreamAssignedObserver implements Observer {
+class StreamAssignedObserver extends FileStreamObserver{
     private static final Logger logger = LoggerFactory.getLogger(StreamAssignedObserver.class);
     private static final int THREAD_SIZE = 10;
 
     private final ExecutorService fileStreamSenderExecutor;
     private final StreamBook streamBook;
     private final ZirkMessageHandler zirkMessageHandler;
-    private final Gson gson = new Gson();
     private final Comms comms;
 
     StreamAssignedObserver(Comms comms, StreamBook streamBook, ZirkMessageHandler zirkMessageHandler){
@@ -88,23 +84,8 @@ class StreamAssignedObserver implements Observer {
             logger.debug("stream sending was sucessfull for streamID {} giving a callback to zirk!", streamRecord.getStreamId());
             //give a callback status to zirk of updated status and reply to sender with updated status.
             zirkMessageHandler.callBackToZirk(streamRecord);
-            replyToSender(streamRecord);
+            replyToSender(streamRecord, comms);
         }
     }
 
-    /**
-     * After updating the #StreamBook, Send a control message to sender with updated #StreamRecord status.
-     * @param streamRecord streamRecord.
-     */
-    private void replyToSender(StreamRecord streamRecord) {
-        final ControlLedger controlLedger = new ControlLedger();
-        controlLedger.setSphereId("DEFAULT");
-
-        final FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderServiceEndPoint(), "DEFAULT", streamRecord);
-        controlLedger.setMessage(streamResponse);
-        controlLedger.setSerializedMessage(gson.toJson(streamResponse));
-
-        logger.debug("sending a reply to sender for stream request {}", streamRecord.getStreamId());
-        comms.sendControlLedger(controlLedger);
-    }
 }
