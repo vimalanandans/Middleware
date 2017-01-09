@@ -22,42 +22,36 @@
  */
 package com.bezirk.streaming.receiver;
 
-import com.bezirk.middleware.core.comms.Comms;
-import com.bezirk.middleware.core.control.messages.ControlLedger;
-import com.bezirk.streaming.FileStreamRequest;
-import com.bezirk.streaming.StreamBook;
-import com.bezirk.streaming.StreamRecord;
-import com.bezirk.streaming.portfactory.FileStreamPortFactory;
-import com.google.gson.Gson;
-
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bezirk.middleware.core.comms.Comms;
+import com.bezirk.streaming.FileStreamRequest;
+import com.bezirk.streaming.StreamBook;
+import com.bezirk.streaming.StreamRecord;
+import com.bezirk.streaming.portfactory.FileStreamPortFactory;
 
 /**
  * StreamAliveObserver is a implementation of <code>StreamEventObserver</code>.
  * #update will be called when the subject StreamBook will be updated with a new entry.
  */
 
-class StreamAliveObserver implements Observer {
+class StreamAliveObserver extends FileStreamObserver{
 
     private static final int THREAD_SIZE = 10;
     private static final Logger logger = LoggerFactory.getLogger(StreamAliveObserver.class);
-    private static final String SPHERE_ID = "DEFAULT";
 
     private final ExecutorService fileStreamReceiverExecutor;
     private final Comms comms;
-    private final Gson gson = new Gson();
     private final StreamBook streamBook;
     private final FileStreamPortFactory portFactory;
     private final ZirkMessageHandler zirkMessageHandler;
@@ -89,7 +83,7 @@ class StreamAliveObserver implements Observer {
 
                 streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ASSIGNED);
                 streamBook.updateRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort, getIPAddress());
-                replyToSender(streamRecord);
+                replyToSender(streamRecord, comms);
                 logger.debug("replied to sender with Assigned status for file {} streaming", streamRecord.getFile().getName());
 
                 //start the receiver thread and send a reply to sender.
@@ -118,29 +112,12 @@ class StreamAliveObserver implements Observer {
                 streamRecord.setRecipientPort(assignedPort);
                 streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.BUSY);
                 streamBook.updateRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, -1, null);
-                replyToSender(streamRecord);
+                replyToSender(streamRecord, comms);
             }
 
             zirkMessageHandler.callBackToZirk(streamRecord);
         }
 
-    }
-
-
-    /**
-     * After updating the #StreamBook, Send a control message to sender with updated #StreamRecord status.
-     * @param streamRecord streamRecord.
-     */
-    private void replyToSender(@NotNull StreamRecord streamRecord) {
-        final ControlLedger controlLedger = new ControlLedger();
-        controlLedger.setSphereId(SPHERE_ID);
-
-        final FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderServiceEndPoint(), SPHERE_ID, streamRecord);
-        controlLedger.setMessage(streamResponse);
-        controlLedger.setSerializedMessage(gson.toJson(streamResponse));
-
-        logger.debug("sending a reply to sender for stream request {}", streamRecord.getStreamId());
-        comms.sendControlLedger(controlLedger);
     }
 
 
