@@ -28,29 +28,29 @@ import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 
 /**
- * StreamRecord, This will hold complete metadata of the streaming information.
+ * StreamRecord class maintains metadata for a {@link com.bezirk.middleware.streaming.Stream}
  * {@link StreamBook will be the container of all the StreamRecord}
  *
  */
 public class StreamRecord {
 
-    private Long streamId;
+    private String streamId;
     private StreamRecordStatus streamRecordStatus = StreamRecordStatus.ALIVE;
-    private BezirkZirkEndPoint recipientServiceEndPoint;
-    private BezirkZirkEndPoint senderServiceEndPoint;
-    private File file;
+    private final BezirkZirkEndPoint recipientServiceEndPoint;
+    private final BezirkZirkEndPoint senderServiceEndPoint;
+    private final File file;
     private int recipientPort;
     private String recipientIp;
     private ZirkId zirkId;
 
-    public StreamRecord(Long streamId, BezirkZirkEndPoint recipientEndPoint, File file, BezirkZirkEndPoint senderEndPoint){
+    public StreamRecord(String streamId, BezirkZirkEndPoint recipientEndPoint, File file, BezirkZirkEndPoint senderEndPoint){
         this.streamId = streamId;
         this.recipientServiceEndPoint = recipientEndPoint;
         this.file = file;
         this.senderServiceEndPoint = senderEndPoint;
     }
 
-    public Long getStreamId() {
+    public String getStreamId() {
         return streamId;
     }
 
@@ -102,17 +102,21 @@ public class StreamRecord {
         return senderServiceEndPoint;
     }
 
+    public void setStreamId(String streamId) {
+        this.streamId = streamId;
+    }
+
     /* Streaming Status indicates the status of the Streams.
-     * ALIVE -  Status for sender, when we has initiated a request.
-     * ADDRESSED   -  indicating the recipient has received the request.
-     * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
-     * BUSY -  indicating the receipient is busy, All the active ports are consumed.
-     * COMPLETED -  Indicates that file transfer was complete.
-     */
+             * ALIVE -  Status for sender, when we has initiated a request.
+             * ADDRESSED   -  indicating the recipient has received the request.
+             * ASSIGNED - If the Port was free for recipient, and has agreed to receive the file.
+             * BUSY -  indicating the receipient is busy, All the active ports are consumed.
+             * COMPLETED -  Indicates that file transfer was complete.
+             * ERROR - Indicates that an error occurred during streaming.
+             */
     public enum StreamRecordStatus {
         ALIVE, ADDRESSED, ASSIGNED , BUSY, COMPLETED, ERROR
 
     }
-
 
 }

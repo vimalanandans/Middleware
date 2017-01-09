@@ -48,6 +48,6 @@ public interface Streaming {
      * Adds streaming request to StreamBook for processing.
      * <code>StreamBook</code> is a registry of all the stream requests.
      */
-    boolean addStreamRecordToQueue(StreamAction streamAction);
+    void addStreamRecordToQueue(StreamAction streamAction);
 
 }

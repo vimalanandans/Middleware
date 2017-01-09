@@ -36,23 +36,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class StreamBook {
 
     //Streaming Request queue.
-    private final Map<Long, StreamRecord> streamingQueue = new ConcurrentHashMap<>();
+    private final Map<String, StreamRecord> streamingQueue = new ConcurrentHashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(StreamBook.class);
 
-    /**
-     * add a streamRecord to streamBook
-     * @param streamRecord streamRecord with streaming metadata.
-     */
-    public void addStreamingRecordToBook(StreamRecord streamRecord){
+
+    public void addRecordinBook(StreamRecord streamRecord){
         streamingQueue.put(streamRecord.getStreamId(), streamRecord);
         logger.debug("added a new stream record {} to stream book", streamRecord.getFile().getName());
     }
 
 
-    /**
-     * update a streamRecord the streamBook
-     */
-    public void updateStreamRecordInBook(Long streamKey, StreamRecord.StreamRecordStatus updateStatus, int port, String deviceIp){
+    public void updateRecordInBook(String streamKey, StreamRecord.StreamRecordStatus updateStatus, int port, String deviceIp){
         //get the stream based on the id and update the status
         final StreamRecord streamRecord = streamingQueue.get(streamKey);
         streamRecord.setStreamRecordStatus(updateStatus);
@@ -70,13 +64,11 @@ public class StreamBook {
 
     }
 
-
-    /**
-     * return boolean based on if the StreamRecord exisits in the streamingQueue
-     * @param streamId streamId of the StreamRecord
-     * @return boolean
-     */
-    public boolean hasStreamRecord(Long streamId) {
+    public boolean hasRecord(String streamId) {
         return streamingQueue.containsKey(streamId);
+    }
+
+    public StreamRecord getRecordStatus(String streamId){
+        return streamingQueue.get(streamId);
     }
 }

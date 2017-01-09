@@ -43,17 +43,16 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
 
     private final FileStreamRequestObserver fileStreamRequestObserver;
     private static final Logger logger = LoggerFactory.getLogger(FileStreamEventReceiver.class);
-    private final Comms comms;
-    private final EventMsgReceiver eventMsgReceiver;
 
     public FileStreamEventReceiver(Comms comms, EventMsgReceiver eventMsgReceiver) {
-        this.comms = comms;
-        this.eventMsgReceiver = eventMsgReceiver;
         fileStreamRequestObserver = new FileStreamRequestObserver(comms, eventMsgReceiver);
     }
 
     /**
-     * All the received Stream_Request control messages will be passed to stream observer
+     * Process STREAM_REQUEST {@link ControlMessage.Discriminator#STREAM_REQUEST} control message
+     * incoming serialized message will be deserialize to {@link FileStreamRequest} and passed to
+     * {@link #fileStreamRequestObserver} for processing
+     *
      * @param id control message ID.
      * @param serializedMsg incoming serialized event message.
      * @return return boolean, if the processing of message was successful or failure.
@@ -63,10 +62,19 @@ public class FileStreamEventReceiver implements CtrlMsgReceiver {
         if(STREAM_REQUEST.equals(id)){
             if(serializedMsg != null){
                 final FileStreamRequest fileStreamRequest =  ControlMessage.deserialize(serializedMsg, FileStreamRequest.class);
-                fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
+                if(fileStreamRequest != null){
+                    fileStreamRequestObserver.incomingStreamRequest(fileStreamRequest);
+                }else{
+                    logger.error("Unable to deserialize the control message to FileStreamRequest!");
+                }
+
+            }else{
+                logger.error("serialized message is null, unable to Deserialize the control message to FileStreamRequest", id);
+                return false;
             }
         }else{
-            logger.error("Unknown request type received at Process Control Message typr is {}", id);
+            logger.error("Unknown request type {} received.", id);
+            return false;
         }
 
         return true;

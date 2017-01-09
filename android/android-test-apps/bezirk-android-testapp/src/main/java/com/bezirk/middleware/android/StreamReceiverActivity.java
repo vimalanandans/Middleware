@@ -3,6 +3,7 @@ package com.bezirk.middleware.android;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
@@ -12,6 +13,9 @@ import com.bezirk.middleware.core.streaming.StreamReceiveEvent;
 import com.bezirk.middleware.core.streaming.StreamReceiverEventSet;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.EventSet;
+import com.bezirk.middleware.messages.StreamEvent;
+import com.bezirk.middleware.streaming.Stream;
+import com.bezirk.middleware.streaming.StreamReceiver;
 import com.jaredrummler.android.device.DeviceName;
 
 public class StreamReceiverActivity extends AppCompatActivity {
@@ -44,8 +48,16 @@ public class StreamReceiverActivity extends AppCompatActivity {
                 }
             }
         });
-
         bezirk.subscribe(receiverEventSet);
+
+        //register for stream event receiver
+        Stream.StreamEventReceiver streamEventReceiver = new Stream.StreamEventReceiver() {
+            @Override
+            public void receiveStreamEvent(StreamEvent event) {
+                Toast.makeText(getApplicationContext(), "Status :: " + event.getStreamRecordStatus(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        bezirk.subscribeToStreamReceiver(streamEventReceiver);
 
     }
 }

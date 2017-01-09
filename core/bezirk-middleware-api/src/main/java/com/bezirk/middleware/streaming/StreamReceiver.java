@@ -20,26 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.bezirk.streaming;
+package com.bezirk.middleware.streaming;
 
-import com.bezirk.middleware.core.streaming.StreamRequest;
-import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
+import java.io.Serializable;
+
+import com.bezirk.middleware.messages.StreamEvent;
 
 /**
- * This will be Streaming Request sent by the Sender{@link com.bezirk.streaming.sender.FileStreamSenderThread}
- * with {@link StreamRecord} metadata.
+ *
  */
 
-public class FileStreamRequest extends StreamRequest {
+public class StreamReceiver {
 
-    private final StreamRecord streamRecord;
+    private StreamReceiver.StreamEventReceiver streamEventReceiver;
 
-    public FileStreamRequest(BezirkZirkEndPoint sender, String sphereId, StreamRecord streamRecord){
-        super(sender, streamRecord.getRecipientServiceEndPoint(), sphereId);
-        this.streamRecord = streamRecord;
+    public void setStreamEventReceiver(StreamEventReceiver streamEventReceiver) {
+        this.streamEventReceiver = streamEventReceiver;
     }
 
-    public StreamRecord getStreamRecord() {
-        return streamRecord;
+    public StreamEventReceiver getStreamEventReceiver() {
+        return streamEventReceiver;
+    }
+
+    /**
+     * Interface implemented by the Zirk developers, Use this {@code streamEventReceiver} object
+     * will be used to give a callback to  receiver.
+     */
+    public interface StreamEventReceiver extends Serializable {
+        /**
+         * Called to notify the subscriber that a new event was received.
+         *
+         * @param event  the received event
+         */
+        void receiveStreamEvent(StreamEvent event);
+
     }
 }

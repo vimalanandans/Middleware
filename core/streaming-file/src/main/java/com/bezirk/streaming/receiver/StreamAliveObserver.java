@@ -42,6 +42,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * StreamAliveObserver is a implementation of <code>StreamEventObserver</code>.
@@ -52,6 +53,7 @@ class StreamAliveObserver implements Observer {
 
     private static final int THREAD_SIZE = 10;
     private static final Logger logger = LoggerFactory.getLogger(StreamAliveObserver.class);
+    private static final String SPHERE_ID = "DEFAULT";
 
     private final ExecutorService fileStreamReceiverExecutor;
     private final Comms comms;
@@ -75,7 +77,7 @@ class StreamAliveObserver implements Observer {
 
         if(StreamRecord.StreamRecordStatus.ALIVE == streamRecord.getStreamRecordStatus()){
             streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ADDRESSED);
-            streamBook.addStreamingRecordToBook(streamRecord);
+            streamBook.addRecordinBook(streamRecord);
 
             //assign a port to stream record from the port factory.
             final int assignedPort = portFactory.getAvailablePort(streamRecord.getStreamId());
@@ -85,18 +87,37 @@ class StreamAliveObserver implements Observer {
                 streamRecord.setRecipientPort(assignedPort);
                 streamRecord.setRecipientIp(getIPAddress());
 
-                //start the receiver thread and send a reply to sender.
-                final FileStreamReceivingThread streamReceivingThread =new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
-                fileStreamReceiverExecutor.execute(streamReceivingThread);
-
                 streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.ASSIGNED);
-                streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort, getIPAddress());
+                streamBook.updateRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.ASSIGNED, assignedPort, getIPAddress());
                 replyToSender(streamRecord);
+                logger.debug("replied to sender with Assigned status for file {} streaming", streamRecord.getFile().getName());
+
+                //start the receiver thread and send a reply to sender.
+                final FileStreamReceivingThread streamReceivingThread = new FileStreamReceivingThread(assignedPort, streamRecord.getFile(), portFactory);
+                final Future<Boolean> future = fileStreamReceiverExecutor.submit(streamReceivingThread);
+
+                try{
+                    //after file streaming is completed give a callback to receiver.
+                    logger.debug("Waiting for file {} streaming to be completed!", streamRecord.getFile().getName());
+                    if(future.get()){
+                        streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.COMPLETED);
+                        streamBook.updateRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.COMPLETED, assignedPort, getIPAddress());
+
+                        //setting it to null as key for streaming receiver key will be null.
+                        streamRecord.setStreamId(null);
+                    }
+                } catch (InterruptedException e) {
+                    logger.error("InterruptedException has occurred during File stream RECEIVING!", e);
+                    Thread.currentThread().interrupt();
+                } catch (Exception e){
+                    logger.error("Exception has occurred during File stream RECEIVING!", e);
+                }
 
             }else{
                 //update the stream record to BUSY status and send it to Sender.
                 streamRecord.setRecipientPort(assignedPort);
-                streamBook.updateStreamRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, -1, null);
+                streamRecord.setStreamRecordStatus(StreamRecord.StreamRecordStatus.BUSY);
+                streamBook.updateRecordInBook(streamRecord.getStreamId(), StreamRecord.StreamRecordStatus.BUSY, -1, null);
                 replyToSender(streamRecord);
             }
 
@@ -112,9 +133,9 @@ class StreamAliveObserver implements Observer {
      */
     private void replyToSender(@NotNull StreamRecord streamRecord) {
         final ControlLedger controlLedger = new ControlLedger();
-        controlLedger.setSphereId("DEFAULT");
+        controlLedger.setSphereId(SPHERE_ID);
 
-        final FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderServiceEndPoint(), "DEFAULT", streamRecord);
+        final FileStreamRequest streamResponse = new FileStreamRequest(streamRecord.getSenderServiceEndPoint(), SPHERE_ID, streamRecord);
         controlLedger.setMessage(streamResponse);
         controlLedger.setSerializedMessage(gson.toJson(streamResponse));
 
@@ -133,13 +154,12 @@ class StreamAliveObserver implements Observer {
             for (NetworkInterface intf : interfaces) {
                 final String sAddr = getNetworkAddress(intf);
                 if (sAddr != null){
+                    logger.debug("Device IP address is {}", sAddr);
                     return sAddr;
-                }else{
-                    logger.error("Error while getting IP address of device!");
                 }
             }
         } catch (Exception ex) {
-            logger.error("Error while getting IP address of device", ex);
+            logger.error("Error while getting IP address of device!", ex);
             throw new UnsupportedOperationException("Could not get the IP address of the device!.");
         }
         return "";
@@ -158,8 +178,6 @@ class StreamAliveObserver implements Observer {
                 boolean isIPv4 = sAddr.indexOf(':')<0;
                 if (isIPv4){
                     return sAddr;
-                }else{
-                    logger.error("could not return a network address from NetworkInterface");
                 }
             }
         }

@@ -54,6 +54,7 @@ public final class FileStreaming implements Streaming {
 
     private static final Logger logger = LoggerFactory.getLogger(FileStreaming.class);
     private static final String ID = UUID.randomUUID().toString();
+    private static final String SPHERE_ID = "DEFAULT";
 
     //inject the object of comms.
     private final Comms comms;
@@ -61,13 +62,15 @@ public final class FileStreaming implements Streaming {
     private final StreamBook streamBook;
 
     public FileStreaming(Comms comms, EventMsgReceiver msgReceiver){
+        if(comms == null){
+            throw new IllegalArgumentException("Comms cannot be initialized to a null value!");
+        }
         this.comms = comms;
         streamBook = new StreamBook();
         logger.info("FileStreaming module was Initialized!");
 
         //register the receiver module
         final FileStreamEventReceiver fileStreamEventReceiver = new FileStreamEventReceiver(comms, msgReceiver);
-        //fileStreamEventReceiver.initFileStreamEventObserver(comms, msgReceiver);
 
         //register the control receiver
         comms.registerControlMessageReceiver(ControlMessage.Discriminator.STREAM_REQUEST,
@@ -82,30 +85,23 @@ public final class FileStreaming implements Streaming {
     }
 
     @Override
-    public boolean addStreamRecordToQueue(StreamAction streamAction) {
+    public void addStreamRecordToQueue(StreamAction streamAction) {
         //prepare stream record from streamAction and save this in the map.
-
         final FileStream fileStream = (FileStream) streamAction.getStreamRequest();
         logger.debug("Adding stream record to queue for {}",fileStream.getFile().getName());
 
-        final BezirkZirkEndPoint sender;
-
-        if (comms != null) {
-            sender = new BezirkZirkEndPoint(comms.getNodeId(), streamAction.getZirkId());
-        } else {
-            sender = new BezirkZirkEndPoint(ID, streamAction.getZirkId());
-        }
-
-        final StreamRecord streamRecord = new StreamRecord(streamAction.getStreamId(), (BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), fileStream.getFile(), sender);
+        final BezirkZirkEndPoint sender = new BezirkZirkEndPoint(comms.getNodeId(), streamAction.getZirkId());
+        final StreamRecord streamRecord = new StreamRecord(streamAction.getStreamId(),
+                (BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), fileStream.getFile(), sender);
         streamRecord.setZirkId(streamAction.getZirkId());
 
         //send a event to receiver when the streamRecord is stored
         if(addStreamRecordToBook(streamRecord)){
             logger.debug("StreamRecord with streamId {} was added to the StreamBook, sending ControlMessage over comms to receiver", streamAction.getStreamId());
             final ControlLedger controlLedger = new ControlLedger();
-            controlLedger.setSphereId("DEFAULT");
+            controlLedger.setSphereId(SPHERE_ID);
 
-            final FileStreamRequest streamRequest = new FileStreamRequest((BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), "DEFAULT", streamRecord);
+            final FileStreamRequest streamRequest = new FileStreamRequest((BezirkZirkEndPoint) fileStream.getRecipientEndPoint(), SPHERE_ID, streamRecord);
             controlLedger.setMessage(streamRequest);
             controlLedger.setSerializedMessage(gson.toJson(streamRequest));
 
@@ -117,11 +113,9 @@ public final class FileStreaming implements Streaming {
 
             logger.info("sending control ledger from Stream module for request {}", streamRequest.getUniqueKey());
             comms.sendControlLedger(controlLedger);
-
         }else{
             logger.error("Unable to add StreamRecord to stream queue!");
         }
-        return false;
     }
 
     /**
@@ -131,8 +125,8 @@ public final class FileStreaming implements Streaming {
      */
     private boolean addStreamRecordToBook(StreamRecord sRecord) {
         synchronized (this) {
-            if (!streamBook.hasStreamRecord(sRecord.getStreamId())) {
-                streamBook.addStreamingRecordToBook(sRecord);
+            if (!streamBook.hasRecord(sRecord.getStreamId())) {
+                streamBook.addRecordinBook(sRecord);
                 logger.debug("addStreamRecordToBook was successful for  {}",sRecord.getFile().getName());
                 return true;
             } else {

@@ -40,12 +40,12 @@ import java.util.Set;
 public class FileStreamPortFactory{
 
     private static final int STARTING_PORT = 6321;
-    private static final Set<Integer> ACTIVE_PORTS = new HashSet<>();
+    private static final Set<Integer> ACTIVE_PORTS = new HashSet<>(10);
     private static final int MAX_STREAM_COUNT = 10;
     private static int lastAssignedPort = STARTING_PORT;
 
     //holds the value for port number assigned for a stream id.
-    private final Map<Long, Integer> portsMap = new HashMap<>();
+    private final Map<String, Integer> portsMap = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(FileStreamPortFactory.class);
 
     /**
@@ -53,7 +53,7 @@ public class FileStreamPortFactory{
      * @param portMapKey portmap key
      * @return a free active port, available for open connection.
      */
-    public int getAvailablePort(Long portMapKey) {
+    public int getAvailablePort(String portMapKey) {
         synchronized (this) {
             int nextPort;
 
@@ -88,11 +88,11 @@ public class FileStreamPortFactory{
      * @param value port value
      * @return boolean value based on the update feature
      */
-    private boolean updatePortsMap(Long portMapKey, int value) {
+    private boolean updatePortsMap(String portMapKey, int value) {
 
         synchronized (this) {
 
-            if (portMapKey <=0 || value <= 0) {
+            if (portMapKey == null || value <= 0) {
                 logger.error("empty values for either key or value");
                 return false;
             }
@@ -101,21 +101,11 @@ public class FileStreamPortFactory{
                 logger.error("port key already exists..");
                 return false;
             }
-            getPortsMap().put(portMapKey, value);
+            portsMap.put(portMapKey, value);
             logger.debug("portmap was updated with key : value: key: {}  value: {}",
                     portMapKey, value);
             return true;
 
-        }
-    }
-
-    /**
-     * returns the complete port map
-     * @return complete port map
-     */
-    private Map<Long, Integer> getPortsMap(){
-        synchronized (this) {
-            return portsMap;
         }
     }
 
@@ -125,17 +115,16 @@ public class FileStreamPortFactory{
      * @return if the process was successful return true else false
      */
     public boolean releasePort(int port) {
+        if (port <= 0) {
+            logger.debug("Cannot release invalid port number {}", port);
+            return false;
+        }
+
         synchronized (this) {
             boolean updatedPortMap = true;
+            if (portsMap.containsValue(port)) {
 
-            if (port <= 0) {
-                logger.debug("Cannot release invalid port number {}", port);
-                return false;
-            }
-
-            if (getPortsMap().containsValue(port)) {
-
-                final Iterator<Integer> portsMapIterator = getPortsMap().values().iterator();
+                final Iterator<Integer> portsMapIterator = portsMap.values().iterator();
                 while (portsMapIterator.hasNext()) {
                     final int portValueEntry = portsMapIterator.next();
                     if (portValueEntry == port) {
@@ -146,7 +135,7 @@ public class FileStreamPortFactory{
                 logger.debug("releasing port {} in port factory", port);
             } else {
                 updatedPortMap = false;
-                logger.debug("port map was not updated in port factory for port {}", port);
+                logger.debug("Not releasing port {}, port not present in the portsMap", port);
             }
 
             return updatedPortMap;

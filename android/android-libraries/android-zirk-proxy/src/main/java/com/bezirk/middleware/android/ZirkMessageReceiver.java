@@ -38,6 +38,7 @@ import com.bezirk.middleware.messages.IdentifiedEvent;
 import com.bezirk.middleware.messages.StreamEvent;
 import com.bezirk.middleware.proxy.api.impl.BezirkZirkEndPoint;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
+import com.bezirk.middleware.streaming.FileStream;
 import com.bezirk.middleware.streaming.Stream;
 
 import org.slf4j.Logger;
@@ -119,12 +120,12 @@ public class ZirkMessageReceiver extends BroadcastReceiver {
      * @param incomingStreamEvent incoming stream event
      */
     private void processStream(StreamAction incomingStreamEvent){
-        final Long streamID = incomingStreamEvent.getStreamId();
-
-        if (ProxyClient.streamSetMap.containsKey(streamID)) {
-            final Stream.StreamEventReceiver receiver = ProxyClient.streamSetMap.get(streamID);
+        final String streamID = incomingStreamEvent.getStreamId();
+        final FileStream fileStream = (FileStream)incomingStreamEvent.getStreamRequest();
+        if (ProxyClient.streamRequestMap.containsKey(streamID)) {
+            final Stream.StreamEventReceiver receiver = ProxyClient.streamRequestMap.get(streamID);
             if(receiver != null){
-                final StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId());
+                final StreamEvent streamEvent = new StreamEvent(incomingStreamEvent.getStreamStatus(), incomingStreamEvent.getStreamId(), fileStream.getFile().getName());
                 receiver.receiveStreamEvent(streamEvent);
             }else{
                 logger.error("receiver object is null for stream request in stream map for Stream ID {}", streamID);

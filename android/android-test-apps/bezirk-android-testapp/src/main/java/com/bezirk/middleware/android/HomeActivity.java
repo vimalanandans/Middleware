@@ -38,6 +38,9 @@ import android.widget.Toast;
 
 import com.bezirk.middleware.android.testApp.R;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class HomeActivity extends AppCompatActivity {
 
     private static final String AUTO_TESTING_MESSAGE = "Test BezirkMiddleware & Bezirk API's for mvp using a single " +
@@ -47,6 +50,8 @@ public class HomeActivity extends AppCompatActivity {
     private static final String STOP_MIDDLEWARE_MESSAGE = "Stops the middleware instance. Once stopped, " +
             "middleware can start only by closing and opening the app again.";
     private static final String STREAM_TESTING_MESSAGE = "Test Bezirk Streaming API";
+    private static final int EXTERNAL_STORAGE_REQUEST_CODE = 2909;
+    private static final Logger logger = LoggerFactory.getLogger(HomeActivity.class);
 
     private TextView autoTextView;
     private TextView advancedTextView;
@@ -122,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.System.canWrite(this)) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE}, 2909);
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_REQUEST_CODE);
             }
         }
 
@@ -131,11 +136,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case 2909: {
+            case EXTERNAL_STORAGE_REQUEST_CODE: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.e("Permission", "Granted");
+                    logger.debug("Read/Write External storage permission has been GRANTED!");
                 } else {
-                    Log.e("Permission", "Denied");
+                    logger.error("Read/Write External storage permission was DENIED!");
                 }
                 return;
             }

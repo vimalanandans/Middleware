@@ -22,11 +22,16 @@
  */
 package com.bezirk.middleware.android;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.preference.PreferenceManager;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
@@ -48,19 +53,16 @@ import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.middleware.streaming.StreamController;
 
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.preference.PreferenceManager;
 
 public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
-    static final Map<Long, Stream.StreamEventReceiver> streamSetMap = new ConcurrentHashMap<>();
+    static final Map<String, Stream.StreamEventReceiver> streamRequestMap = new HashMap<>();
+
     /**
      * Stores the list of <code>EventSet</code>(s) associated with each zirk.
      * [Key -&gt; Value] = [ZirkId -&gt; [List of EventSets]]
@@ -235,9 +237,9 @@ public class ProxyClient implements Bezirk {
     @Override
     public StreamController sendStream(final Stream streamRequest){
         //generate a unique streamID, this will be the primary key for stream access.
-        final Long streamID = System.currentTimeMillis();
+        final String streamID = UUID.randomUUID().toString();
         StreamController fileStreamController = null;
-        if(!streamSetMap.containsKey(streamID)){
+        if(!streamRequestMap.containsKey(streamID)){
             fileStreamController = new FileStreamController(streamID);
             final BezirkAction bezirkAction  = BezirkAction.ACTION_BEZIRK_PUSH_UNICAST_STREAM;
             handler.post(new Runnable() {
@@ -247,8 +249,8 @@ public class ProxyClient implements Bezirk {
                 }
             });
 
-            //add the streamReciver to streamSetMap, used by the ZirkMessageReceiver to give callbacks.
-            streamSetMap.put(streamID, streamRequest.getStreamEventReceiver());
+            //add the streamReciver to streamRequestMap, used by the ZirkMessageReceiver to give callbacks.
+            streamRequestMap.put(streamID, streamRequest.getStreamEventReceiver());
         }else{
             logger.error("Stream ID already exists in the StreamMap {}", streamID);
         }
@@ -256,4 +258,9 @@ public class ProxyClient implements Bezirk {
         return fileStreamController;
     }
 
+    @Override
+    public void subscribeToStreamReceiver(Stream.StreamEventReceiver streamEventReceiver) {
+        //adding a stream receiver object with null key
+        streamRequestMap.put(null, streamEventReceiver);
+    }
 }

@@ -1,20 +1,22 @@
 package com.bezirk.middleware.android;
 
+import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.middleware.streaming.StreamController;
 
 /**
- * Class {@link FileStreamController} extends {@link StreamController} is class provides action to control File Streaming.
- * using this instance user can stop the streaming.
+ * This class provides the zirks to control the ongoing streaming.
+ * StreamId wil be the primary key for handling streaming and this object with be returned once
+ * {@link com.bezirk.middleware.Bezirk#sendStream(Stream)} has been initiated.
+ *
+ * Zirks can use {@link #stopStreaming()} method to interrupt the ongoing streaming.
  *
  */
 
 class FileStreamController extends StreamController {
 
-    //primary key for streaming.
-    private final Long streamId;
+    private final String streamId;
 
-    //constructor
-    FileStreamController(Long streamId){
+    FileStreamController(String streamId){
         this.streamId = streamId;
     }
 
@@ -28,7 +30,7 @@ class FileStreamController extends StreamController {
         */
     }
 
-    public Long getStreamId() {
+    public String getStreamId() {
         return streamId;
     }
 

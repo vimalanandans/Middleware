@@ -84,16 +84,13 @@ class FileStreamRequestObserver extends Observable implements StreamReceiver, Zi
             }
 
         }else{
-            logger.error("Incomming Stream Request was null!");
+            logger.error("Incoming Stream Request was null!");
         }
 
     }
 
 }
 
-/**
- *
- */
 interface ZirkMessageHandler{
     void callBackToZirk(StreamRecord streamRecord);
 }

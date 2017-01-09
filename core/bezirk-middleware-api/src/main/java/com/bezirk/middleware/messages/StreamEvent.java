@@ -32,15 +32,21 @@ import com.bezirk.middleware.streaming.Stream;
 public class StreamEvent {
 
     private final StreamRecordStatus streamRecordStatus;
-    private final Long streamId;
+    private final String streamId;
+    private final String fileName;
 
-    public StreamEvent(String streamRecordStatus, Long streamId){
+    public StreamEvent(String streamRecordStatus, String streamId, String fileName){
         this.streamRecordStatus = StreamRecordStatus.valueOf(streamRecordStatus);
         this.streamId = streamId;
+        this.fileName = fileName;
     }
 
-    public Long getStreamId() {
+    public String getStreamId() {
         return streamId;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public StreamRecordStatus getStreamRecordStatus() {

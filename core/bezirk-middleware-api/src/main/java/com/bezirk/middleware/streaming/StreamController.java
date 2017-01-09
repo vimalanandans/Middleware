@@ -23,10 +23,9 @@
 package com.bezirk.middleware.streaming;
 
 /**
- * Use StreamController to perform control actions on a active stream. A generic action for all streaming types is to stopStreaming.
- * An object of StreamController will be returned to Zirk when {@link com.bezirk.middleware.Bezirk#sendStream(Stream)} is performed. Using this object
- * zirk can perform on active streaming.
- *
+ * Every streaming {@link com.bezirk.middleware.Bezirk#sendStream(Stream)} will return a controller
+ * object to Zirk.
+ * Zirks will use the controller methods to command the active streaming.
  */
 
 public abstract class StreamController {

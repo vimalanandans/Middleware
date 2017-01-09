@@ -22,6 +22,16 @@
  */
 package com.bezirk.middleware.java.proxy;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bezirk.middleware.Bezirk;
 import com.bezirk.middleware.addressing.Location;
 import com.bezirk.middleware.addressing.RecipientSelector;
@@ -46,16 +56,6 @@ import com.bezirk.middleware.messages.MessageSet;
 import com.bezirk.middleware.proxy.api.impl.ZirkId;
 import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.middleware.streaming.StreamController;
-
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 public class ProxyClient implements Bezirk {
     private static final Logger logger = LoggerFactory.getLogger(ProxyClient.class);
@@ -204,6 +204,11 @@ public class ProxyClient implements Bezirk {
 
     @Override
     public StreamController sendStream(Stream streamRequest) {
+        throw new UnsupportedOperationException("feature to be implemented.");
+    }
+
+    @Override
+    public void subscribeToStreamReceiver(Stream.StreamEventReceiver streamEventReceiver) {
         throw new UnsupportedOperationException("feature to be implemented.");
     }
 }

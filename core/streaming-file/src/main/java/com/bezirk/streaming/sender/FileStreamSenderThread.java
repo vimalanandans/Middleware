@@ -22,20 +22,19 @@
  */
 package com.bezirk.streaming.sender;
 
-import com.bezirk.middleware.core.util.ValidatorUtility;
-import com.bezirk.streaming.StreamRecord;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.Callable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.bezirk.middleware.core.util.ValidatorUtility;
+import com.bezirk.streaming.StreamRecord;
 
 /**
  * This is FileStreamSenderThread, Which will be responsible for sending the chunks of bytes on the open Socket
@@ -48,15 +47,11 @@ public class FileStreamSenderThread implements Callable<Boolean> {
     private static final int BUFFER_SIZE = 1024;
 
     private Socket client;
-    private final File file;
-    private final String recipientIP;
-    private final int port;
+    private final StreamRecord streamRecord;
 
 
     public FileStreamSenderThread(StreamRecord streamRecord){
-        this.file = streamRecord.getFile();
-        this.recipientIP = streamRecord.getRecipientIp();
-        this.port = streamRecord.getRecipientPort();
+        this.streamRecord  = streamRecord;
     }
 
     @Override
@@ -66,9 +61,9 @@ public class FileStreamSenderThread implements Callable<Boolean> {
         FileInputStream fileInputStream = null;
         DataOutputStream dataOutputStream = null;
         try {
-            logger.debug("Thread started to send the data for file {}", file.getName());
-            fileInputStream = new FileInputStream(file);
-            client = new Socket(recipientIP, port);
+            logger.debug("Thread started to send the data for file {} and stream id {}", streamRecord.getFile().getName(), streamRecord.getStreamId());
+            fileInputStream = new FileInputStream(streamRecord.getFile());
+            client = new Socket(streamRecord.getRecipientIp(), streamRecord.getRecipientPort());
             dataOutputStream = new DataOutputStream(client.getOutputStream());
 
             int noOfBytesReadFromTheFile;
@@ -79,9 +74,9 @@ public class FileStreamSenderThread implements Callable<Boolean> {
             logger.debug("---------- Data has been transferred successfully! -------------");
             streamStatus = Boolean.TRUE;
         } catch (FileNotFoundException e) {
-            logger.debug("Error in Sending stream : {}",file.getPath(), e);
+            logger.debug("Error in Sending stream : {}",streamRecord.getFile().getPath(), e);
         } catch (UnknownHostException e) {
-            logger.debug("Error in Opening socket to host : {}, for port {}", recipientIP, port, e);
+            logger.debug("Error in Opening socket to host : {}, for port {}", streamRecord.getRecipientIp(), streamRecord.getRecipientPort(), e);
         } catch (IOException e) {
             logger.debug("Error in Sending Thread", e);
         } finally {

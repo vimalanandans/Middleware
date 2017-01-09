@@ -27,8 +27,10 @@ import com.bezirk.middleware.addressing.RecipientSelector;
 import com.bezirk.middleware.addressing.ZirkEndPoint;
 import com.bezirk.middleware.messages.Event;
 import com.bezirk.middleware.messages.MessageSet;
+import com.bezirk.middleware.messages.StreamEvent;
 import com.bezirk.middleware.streaming.Stream;
 import com.bezirk.middleware.streaming.StreamController;
+import com.bezirk.middleware.streaming.StreamReceiver;
 
 /**
  * The API for registering Zirks, sending messages, and subscribing to messages sent by other Zirks.
@@ -118,17 +120,22 @@ public interface Bezirk {
     void setLocation(Location location);
 
     /**
-     * This method is used to inform the middleware for streaming. Streaming follows Uni-Cast model to transfer the data.
-     * Prepare a instance of {@link Stream} with {@link Stream#recipientEndPoint} and use {@link Stream.StreamEventReceiver}
-     * to set the receiver and receive the callbacks with {@link com.bezirk.middleware.messages.StreamEvent#streamRecordStatus}
-     * to handle callbacks.
+     * This method is used to inform the middleware for streaming. Streaming follows Uni-Cast model
+     * to transfer the data.Prepare a instance of {@link Stream} with {@link Stream#recipientEndPoint}
+     * and use {@link Stream.StreamEventReceiver} to set the receiver and receive the callbacks with
+     * {@link com.bezirk.middleware.messages.StreamEvent#streamRecordStatus} to handle callbacks.
      *
-     * You will get the updated status to your stream request from the receiver. Received status could be.
-     * BUSY -  indicating the receipient is busy, All the active ports are consumed.
-     * COMPLETED -  Indicates that file transfer was complete.
-     * ERROR - Indicates that an error occured during streaming
+     * The updated stream status will be passed as a callback to
+     * {@link Stream.StreamEventReceiver#receiveStreamEvent(StreamEvent)}
+     * The received status will be of type {@link StreamEvent.StreamRecordStatus}
      *
      * @param streamRequest object which will have stream request metadata.
      */
     StreamController sendStream(Stream streamRequest);
+
+    /**
+     *
+     * @return
+     */
+    void subscribeToStreamReceiver(Stream.StreamEventReceiver streamEventReceiver);
 }

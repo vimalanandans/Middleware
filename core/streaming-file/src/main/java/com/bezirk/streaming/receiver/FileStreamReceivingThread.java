@@ -36,12 +36,17 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.Callable;
 
 /**
- * FileStreamReceivingThread, will be a running thread
+ * This thread will be started by the File receiver bezirk instance. Once bezirk instance will
+ * receive a {@link com.bezirk.streaming.StreamRecord} with
+ * {@link com.bezirk.streaming.StreamRecord.StreamRecordStatus#ALIVE} state it starts this thread
+ * at assigned port and waits for the socket connection.
+ *
  */
 
-class FileStreamReceivingThread implements Runnable{
+class FileStreamReceivingThread implements Callable<Boolean>{
 
     private static final int CONNECTION_TIMEOUT_TIME = 45000;
     private static final String FILE_DOWNLOAD_FOLDER = "/storage/emulated/0/bezirk/downloads/";
@@ -59,7 +64,7 @@ class FileStreamReceivingThread implements Runnable{
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
         ServerSocket socket = null;
         Socket receivingSocket = null;
         File tempFile = null;
@@ -73,8 +78,8 @@ class FileStreamReceivingThread implements Runnable{
             socket.setSoTimeout(CONNECTION_TIMEOUT_TIME);
             receivingSocket = socket.accept();
 
-            if(getDownloadPath(FILE_DOWNLOAD_FOLDER) != null){
-                tempFile = new File(getDownloadPath(FILE_DOWNLOAD_FOLDER) + file.getName());
+            if(validateDownloadPath(FILE_DOWNLOAD_FOLDER)){
+                tempFile = new File(FILE_DOWNLOAD_FOLDER + file.getName());
                 fileOutputStream = new FileOutputStream(tempFile);
                 inputStream = new DataInputStream(receivingSocket.getInputStream());
 
@@ -97,13 +102,16 @@ class FileStreamReceivingThread implements Runnable{
             logger.error("Exception occurred while receiving stream.", e);
         } finally {
             portFactory.releasePort(assignedPort);
+            closeResources(socket, receivingSocket, fileOutputStream, inputStream);
             if (streamErrored) {
                 if (tempFile.exists() && !tempFile.delete()) {
                     logger.error("Failed to delete temporary stream file: {}", tempFile);
                 }
+                return Boolean.FALSE;
             }
-            closeResources(socket, receivingSocket, fileOutputStream, inputStream);
+
         }
+        return Boolean.TRUE;
     }
 
     /**
@@ -137,23 +145,27 @@ class FileStreamReceivingThread implements Runnable{
     }
 
     /**
-     * creates the folder if not existing and returns the download path for the respective environment
+     * creates the folder if not existing and returns the download path for the respective
+     * environment. Will return null if the createDownloadFolder.mkdir() return false.
      * @return downloadFolder Path of the download folder.
      */
-    private String getDownloadPath(String downloadFolder){
+    private boolean validateDownloadPath(String downloadFolder){
         final File createDownloadFolder = new File(downloadFolder);
-        if (!createDownloadFolder.exists()) {
+        boolean validatePath;
+        if (createDownloadFolder.exists()) {
+            validatePath = true;
+            logger.debug("Download folder {} already exist", createDownloadFolder.getAbsolutePath());
+        }else{
             if (createDownloadFolder.mkdir()) {
+                validatePath = true;
                 logger.debug("create download folder: {}", createDownloadFolder.getAbsolutePath());
             }else{
-                logger.error("Failed to create download direction: {}",
+                logger.error("Failed to create download directory: {}",
                         createDownloadFolder.getAbsolutePath());
-                return null;
+                validatePath = false;
             }
-        }else{
-            logger.error("Download folder does not exist {}", createDownloadFolder.getAbsolutePath());
         }
-        return downloadFolder;
+        return validatePath;
     }
 
 
