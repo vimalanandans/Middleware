@@ -134,8 +134,13 @@ public interface Bezirk {
     StreamController sendStream(Stream streamRequest);
 
     /**
+     * Use this method to subscribe to receive updates on stream event. Only applicable gor receiver.
      *
-     * @return
+     * The updated stream status will be passed as a callback to
+     * {@link Stream.StreamEventReceiver#receiveStreamEvent(StreamEvent)}
+     * The received status will be of type {@link StreamEvent.StreamRecordStatus}
+     *
+     * @param streamEventReceiver Object instance which gives callback StreamEvent to Zirk.
      */
     void subscribeToStreamReceiver(Stream.StreamEventReceiver streamEventReceiver);
 }

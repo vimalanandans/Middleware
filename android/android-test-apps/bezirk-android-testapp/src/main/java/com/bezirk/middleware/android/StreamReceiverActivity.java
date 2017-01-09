@@ -53,7 +53,7 @@ public class StreamReceiverActivity extends AppCompatActivity {
         Stream.StreamEventReceiver streamEventReceiver = new Stream.StreamEventReceiver() {
             @Override
             public void receiveStreamEvent(StreamEvent event) {
-                Toast.makeText(getApplicationContext(), "Status :: " + event.getStreamRecordStatus()+ "Fiel path is "+event.getFileName() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Status :: " + event.getStreamRecordStatus()+ "File path is "+event.getFileName() , Toast.LENGTH_SHORT).show();
             }
         };
         bezirk.subscribeToStreamReceiver(streamEventReceiver);

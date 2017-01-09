@@ -258,9 +258,14 @@ public class ProxyClient implements Bezirk {
         return fileStreamController;
     }
 
+    /**
+     * save StreamEventReceiver with null key in the map. there will be only one receiver for all
+     * the streaming updates.
+     *
+     * @param streamEventReceiver
+     */
     @Override
     public void subscribeToStreamReceiver(Stream.StreamEventReceiver streamEventReceiver) {
-        //adding a stream receiver object with null key
         streamRequestMap.put(null, streamEventReceiver);
     }
 }
