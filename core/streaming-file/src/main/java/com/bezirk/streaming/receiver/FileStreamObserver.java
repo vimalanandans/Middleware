@@ -43,7 +43,6 @@ import com.google.gson.Gson;
  */
 
 abstract class FileStreamObserver implements Observer  {
-
     private static final Logger logger = LoggerFactory.getLogger(FileStreamObserver.class);
     private static final String SPHERE_ID = "DEFAULT";
     private final Gson gson = new Gson();
