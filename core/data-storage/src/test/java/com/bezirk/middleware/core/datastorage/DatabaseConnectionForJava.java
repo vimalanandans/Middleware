@@ -52,7 +52,6 @@ public final class DatabaseConnectionForJava implements DatabaseConnection {
     public Dao<PersistenceRegistry, Integer> getPersistenceDAO() throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = DaoManager.createDao(getDatabaseConnection(), PersistenceRegistry.class);
-            bezirkPersistenceDao.setAutoCommit(true);
         }
         return bezirkPersistenceDao;
     }
