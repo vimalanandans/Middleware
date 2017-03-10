@@ -62,7 +62,6 @@ public class DatabaseConnectionForAndroid extends OrmLiteSqliteOpenHelper implem
             throws NullPointerException, SQLException, IOException {
         if (null == bezirkPersistenceDao) {
             bezirkPersistenceDao = getDao(PersistenceRegistry.class);
-            bezirkPersistenceDao.setAutoCommit(true);
         }
         return bezirkPersistenceDao;
     }

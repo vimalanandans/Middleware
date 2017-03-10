@@ -14,8 +14,8 @@ dependencies {
     compile 'org.bouncycastle:bcprov-jdk15on:1.49'
 
     // orm db files
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'com.j256.ormlite:ormlite-jdbc:4.48'
+    compile 'com.j256.ormlite:ormlite-core:5.0'
+    compile 'com.j256.ormlite:ormlite-jdbc:5.0'
 
     testCompile 'junit:junit:4.12'
 }
